@@ -36,7 +36,7 @@ router.post(async function (req: NextApiRequest, res: NextApiResponse) {
 
     res.status(201).json({
       data: {
-        link: `https://localhost:3000/${linkUid}`,
+        link: `http://localhost:3000/${linkUid}`,
       },
     })
   } catch (err) {

@@ -1,0 +1,17 @@
+.container {
+  max-width: 900px;
+  height: 100vh;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: grid;
+  justify-content: center;
+  grid-template-rows: max-content;
+}
+
+.shortenForm {
+  margin-block-start: 2rem;
+}
+
+.resultLink {
+  margin-block-start: 1rem;
+}

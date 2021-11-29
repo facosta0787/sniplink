@@ -6,18 +6,18 @@ const api = airtable()
 
 export async function middleware(req: NextRequest, ev: NextFetchEvent) {
   let { pathname } = req.nextUrl
-  pathname = pathname.replace(/\//g, '')
+  pathname = pathname.split('/')[1]
 
-  if (req.method !== 'GET' && ['favicon.ico', 'api', ''].includes(pathname))
+  if (req.method !== 'GET' || ['favicon.ico', 'api', ''].includes(pathname)) {
     return
-
-  const params = { filterByFormula: `FIND("${pathname}", {uid})` }
+  }
 
   try {
+    const params = { filterByFormula: `FIND("${pathname}", {uid})` }
     const { data } = await api.getLinks(params)
     const url = data.records[0].fields.link
     return NextResponse.redirect(url)
-  } catch(error) {
+  } catch (error) {
     return
   }
 }
