@@ -6,6 +6,7 @@ import Router from 'src/lib/router'
 
 const api = airtable()
 const router = Router()
+const linkDomain = process.env.LINK_DOMAIN
 
 router.get(async function (req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -36,7 +37,7 @@ router.post(async function (req: NextApiRequest, res: NextApiResponse) {
 
     res.status(201).json({
       data: {
-        link: `http://localhost:3000/${linkUid}`,
+        link: `${linkDomain}/${linkUid}`,
       },
     })
   } catch (err) {
