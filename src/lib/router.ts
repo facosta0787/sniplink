@@ -38,8 +38,8 @@ export default function Router() {
           break
         }
       default:
-        res.status(400).json({
-          status: 'Bad Request',
+        res.status(405).json({
+          status: 'Method Not Allowed',
           message: `Method ${req.method} not allowed`,
         })
     }
