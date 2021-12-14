@@ -3,10 +3,11 @@ import type { FormEvent } from 'react'
 import { useState } from 'react'
 import isURL from 'validator/lib/isURL'
 
+import { Button } from '../src/components/Button'
 import scss from '../styles/Home.module.scss'
 
 const Home: NextPage = () => {
-  const [result, setResult] = useState<string>('')
+  const [result, setResult] = useState<string>('https://sniplink.tk/r13MlIEQ')
   const [copied, setCopied] = useState<boolean>(false)
 
   const handleSubmit = async (
@@ -40,12 +41,12 @@ const Home: NextPage = () => {
 
   return (
     <div className={scss.container}>
-      <h2>
+      <h1>
         Sniplink <div className={scss.icon}>✂️</div>
-      </h2>
+      </h1>
       <form className={scss.shortenForm} onSubmit={handleSubmit}>
         <input id='inputShorten' type='text' autoComplete='off' autoFocus />
-        <button type='submit'>Shorten</button>
+        <Button>Shorten</Button>
       </form>
       {Boolean(result) && (
         <div className={scss.resultContainer}>
