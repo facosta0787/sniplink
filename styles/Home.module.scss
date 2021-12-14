@@ -35,6 +35,17 @@ $xl: 1536px;
   }
 }
 
-.resultLink {
+.resultContainer {
   margin-block-start: 1rem;
+
+  i:first-child {
+    display: inline-block;
+    margin-right: 1.5rem;
+  }
+
+  i:last-child {
+    display: inline-block;
+    margin-left: 1.5rem;
+    cursor: pointer;
+  }
 }

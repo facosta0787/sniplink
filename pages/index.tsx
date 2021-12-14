@@ -6,7 +6,8 @@ import isURL from 'validator/lib/isURL'
 import scss from '../styles/Home.module.scss'
 
 const Home: NextPage = () => {
-  const [result, setResult] = useState<string>('http://localhost:3000/BbFb0qEo')
+  const [result, setResult] = useState<string>('')
+  const [copied, setCopied] = useState<boolean>(false)
 
   const handleSubmit = async (
     event: FormEvent<HTMLFormElement> | undefined
@@ -31,17 +32,40 @@ const Home: NextPage = () => {
     }
   }
 
+  const handleCopyClick = (): void => {
+    navigator.clipboard.writeText(result)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500)
+  }
+
   return (
     <div className={scss.container}>
-      <h2>Sniplink <div className={scss.icon}>✂️</div></h2>
+      <h2>
+        Sniplink <div className={scss.icon}>✂️</div>
+      </h2>
       <form className={scss.shortenForm} onSubmit={handleSubmit}>
         <input id='inputShorten' type='text' autoComplete='off' autoFocus />
         <button type='submit'>Shorten</button>
       </form>
       {Boolean(result) && (
-        <a href={result} target='_blank' rel='noreferrer' className={scss.resultLink}>
-          {result}
-        </a>
+        <div className={scss.resultContainer}>
+          <i>🔗</i>
+          <a
+            href={result}
+            target='_blank'
+            rel='noreferrer'
+            className={scss.resultLink}
+          >
+            {result}
+          </a>
+          {copied ? (
+            <i>
+              <small>copied! 👍🏼</small>
+            </i>
+          ) : (
+            <i onClick={handleCopyClick}>📑</i>
+          )}
+        </div>
       )}
     </div>
   )
