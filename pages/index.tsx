@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import type { FormEvent } from 'react'
 import { useState } from 'react'
-import isURL from 'src/utils/is-url'
+import isURL from 'validator/es/lib/isURL'
 
 import scss from '../styles/Home.module.scss'
 
