@@ -7,7 +7,7 @@ import { Button } from '../src/components/Button'
 import scss from '../styles/Home.module.scss'
 
 const Home: NextPage = () => {
-  const [result, setResult] = useState<string>('https://sniplink.tk/r13MlIEQ')
+  const [result, setResult] = useState<string>('')
   const [copied, setCopied] = useState<boolean>(false)
 
   const handleSubmit = async (
