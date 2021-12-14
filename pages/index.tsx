@@ -6,7 +6,7 @@ import isURL from 'validator/lib/isURL'
 import scss from '../styles/Home.module.scss'
 
 const Home: NextPage = () => {
-  const [result, setResult] = useState<string>('')
+  const [result, setResult] = useState<string>('http://localhost:3000/BbFb0qEo')
 
   const handleSubmit = async (
     event: FormEvent<HTMLFormElement> | undefined
@@ -33,6 +33,7 @@ const Home: NextPage = () => {
 
   return (
     <div className={scss.container}>
+      <h2>Sniplink <div className={scss.icon}>✂️</div></h2>
       <form className={scss.shortenForm} onSubmit={handleSubmit}>
         <input id='inputShorten' type='text' autoComplete='off' autoFocus />
         <button type='submit'>Shorten</button>

@@ -6,17 +6,33 @@ $lg: 1200px;
 $xl: 1536px;
 
 .container {
-  max-width: 900px;
+  max-width: $sm;
   height: 100vh;
   margin: 0 auto;
   box-sizing: border-box;
-  display: grid;
-  justify-content: center;
-  grid-template-rows: max-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .icon {
+    display: inline-block;
+    transform: rotate(-130deg);
+  }
 }
 
 .shortenForm {
-  margin-block-start: 2rem;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  input {
+    width: 100%;
+  }
+
+  button {
+    margin-block-start: .5rem;
+  }
 }
 
 .resultLink {
