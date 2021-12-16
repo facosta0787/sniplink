@@ -44,6 +44,7 @@ function airtable(): IAirtable {
 function fetchLinks(reqconfig: IReqconfig) {
   return {
     getLinks: async function (params?: IObjectToQueryStringParams): Promise<any> {
+      console.log('*** URL:', `${reqconfig.baseURL}/${env.AT_SHEET}?${objectToQueryString(params)}`)
       const response = await fetch(
         `${reqconfig.baseURL}/${env.AT_SHEET}?${objectToQueryString(params)}`,
         { headers: new Headers(reqconfig.headers) }
