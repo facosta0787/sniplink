@@ -16,8 +16,10 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
     const params = { filterByFormula: `FIND("${pathname}", {uid})` }
     const { data } = await api.getLinks(params)
     const url = data.records[0].fields.link
+    console.log('*** url:', url)
     return NextResponse.redirect(url)
   } catch (error) {
+    console.error(error)
     return
   }
 }
