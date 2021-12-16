@@ -5,7 +5,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "vercel --prod && VERCEL_PROJECT_ID=prj_wz6XX18S1ZOHnd4XXBYTG3JJoMr8 node src/config/scripts/remove.deployments.mjs"
   },
   "dependencies": {
     "axios": "^0.24.0",
