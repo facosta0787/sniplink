@@ -2,16 +2,17 @@
 
 Simple link shortener, was created for practicing with the airtable api and for test the new middleware feature of NextJs 12.
 
-[sniplink.tk](https://sniplink.tk)
+[sniplink.tk](https://sniplink.tk)<br>
+
 ![demo](public/sniplink-demo.gif)
 
 ## Setting up
 
 First of all you have to create you airtable with the next formats and names:
 
-**Table Name**: links-shortener
-**production sheet**: links
-**development sheet**: links-dev
+**Table Name**:        links-shortener <br>
+**production sheet**:  links <br>
+**development sheet**: links-dev <br>
 
 |Field Name|Type|
 |---|---|
