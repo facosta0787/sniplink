@@ -45,7 +45,7 @@ function fetchLinks(reqconfig: IReqconfig) {
   return {
     getLinks: async function (params?: IObjectToQueryStringParams): Promise<any> {
       const response = await fetch(
-        `${reqconfig.baseURL}/links?${objectToQueryString(params)}`,
+        `${reqconfig.baseURL}/${env.AT_SHEET}?${objectToQueryString(params)}`,
         { headers: new Headers(reqconfig.headers) }
       )
       const data = await response.json()
@@ -61,7 +61,7 @@ function createLink(reqconfig: IReqconfig) {
         records: [{ fields: link }],
       }
 
-      const response = await fetch(`${reqconfig.baseURL}/links`, {
+      const response = await fetch(`${reqconfig.baseURL}/${env.AT_SHEET}`, {
         headers: new Headers(reqconfig.headers),
         method: 'post',
         body: JSON.stringify(params),

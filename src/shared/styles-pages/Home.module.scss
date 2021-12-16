@@ -28,16 +28,32 @@ $xl: 1536px;
 
   input {
     width: 100%;
-    border: 1px solid rgb(234, 234, 234);
+    border: 1px solid #eaeaea;
     height: 30px;
     padding: 0 12px;
     border-radius: 5px;
     box-sizing: border-box;
     outline: 0 none black;
+    position: relative;
+    z-index: 1;
 
     &:active, &:focus {
       border-color: rgb(0, 0, 0);
     }
+  }
+
+  .urlStringError {
+    color: #ee0000;
+    display: inline-block;
+    font-size: 0.875rem;
+    height: 0;
+    overflow: hidden;
+    transition: all .3s ease-in-out;
+  }
+
+  .urlStringErrorShow {
+    height: 23px;
+    margin-block-start: .5rem;
   }
 
   button {
@@ -48,21 +64,18 @@ $xl: 1536px;
 .resultContainer {
   margin-block-start: 1rem;
 
-  i:first-child {
-    display: inline-block;
-    margin-right: 1.5rem;
-  }
-
   a {
     &:hover {
-      color: rgb(0 ,112, 243);
+      color: #0070F3;
       text-decoration: underline;
     }
   }
 
   i:last-child {
+    font-size: .875rem;
     display: inline-block;
     margin-left: 1.5rem;
     cursor: pointer;
+    color: #29BC9B;
   }
 }
