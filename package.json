@@ -1,5 +1,5 @@
 {
-  "name": "links-shortener",
+  "name": "sniplink",
   "private": true,
   "scripts": {
     "dev": "next dev",
