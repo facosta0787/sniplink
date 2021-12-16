@@ -2,7 +2,7 @@
 
 Simple link shortener, was created for practicing with the airtable api and for test the new middleware feature of NextJs 12.
 
-[sniplink.tk](https://sniplink.tk)  
+[sniplink.tk](https://sniplink.tk)
 ![demo](public/sniplink-demo.gif)
 
 ## Setting up
@@ -29,8 +29,8 @@ npm run dev
 
 ## Stack
 
-Vercel
-NextJS
-ReactJS
-Type Script
-React Query
+- Vercel
+- NextJS
+- ReactJS
+- Type Script
+- React Query
