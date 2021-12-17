@@ -7,8 +7,8 @@ VERCEL_DEPLOYMENT_ID=$(curl "https://api.vercel.com/v2/now/aliases/$REVIEW_URL" 
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
-| config/scripts/bin/jq-linux ".deploymentId" \
-| sed 's/"//g')
+| config/scripts/bin/jq-linux ".deploymentId" \ # Using jq  for taking the deploymentId value
+| sed 's/"//g') # Removing double quotes
 
 if [ -z ${VERCEL_DEPLOYMENT_ID+x} ] || [ -z ${VERCEL_DEPLOYMENT_ID} ]; then
   echo "Deployment not found"
