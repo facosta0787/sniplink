@@ -24,7 +24,7 @@ $xl: 1536px;
   width: 80%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  // align-items: center;
 
   input {
     width: 100%;
@@ -37,8 +37,20 @@ $xl: 1536px;
     position: relative;
     z-index: 1;
 
-    &:active, &:focus {
+    &:active,
+    &:focus {
       border-color: rgb(0, 0, 0);
+    }
+  }
+
+  .formGroup {
+    width: 100%;
+    margin-top: 0.5rem;
+    display: flex;
+
+    input {
+      width: 80%;
+      margin-right: auto;
     }
   }
 
@@ -48,16 +60,17 @@ $xl: 1536px;
     font-size: 0.875rem;
     height: 0;
     overflow: hidden;
-    transition: all .3s ease-in-out;
+    transition: all 0.3s ease-in-out;
   }
 
   .urlStringErrorShow {
     height: 23px;
-    margin-block-start: .5rem;
+    margin-block-start: 0.5rem;
   }
 
-  button {
-    margin-block-start: .5rem;
+  .aliasCaption {
+    color: #919191;
+    font-size: 0.75rem;
   }
 }
 
@@ -66,16 +79,16 @@ $xl: 1536px;
 
   a {
     &:hover {
-      color: #0070F3;
+      color: #0070f3;
       text-decoration: underline;
     }
   }
 
   i:last-child {
-    font-size: .875rem;
+    font-size: 0.875rem;
     display: inline-block;
     margin-left: 1.5rem;
     cursor: pointer;
-    color: #29BC9B;
+    color: #29bc9b;
   }
 }

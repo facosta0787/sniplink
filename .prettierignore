@@ -1,0 +1,11 @@
+.next
+.vercel
+.eslintrc.json
+.prettierrc
+.prettierignore
+.vscode/settings.json
+jsconfig.json
+package.json
+package-lock.json
+next.config.js
+tsconfig.json
