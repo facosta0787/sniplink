@@ -9,16 +9,19 @@ const router = Router();
 const linkDomain = process.env.LINK_DOMAIN;
 
 router.get(async function (req: NextApiRequest, res: NextApiResponse) {
+  const { alias } = req.query;
   try {
-    const { data } = await api.getLinks();
-    res.json(data);
+    const { data } = await api.getLinks({
+      filterByFormula: `FIND("${alias}", {alias})`,
+    });
+    res.json(data.records);
   } catch (err) {
     res.status(400).json({ message: 'Unexpected Error' });
   }
 });
 
 router.post(async function (req: NextApiRequest, res: NextApiResponse) {
-  const { link } = req.body;
+  const { link, alias } = req.body;
   if (!link) {
     return res.status(400).json({
       error: {
@@ -28,16 +31,34 @@ router.post(async function (req: NextApiRequest, res: NextApiResponse) {
     });
   }
 
+  if (alias !== '') {
+    try {
+      const { data } = await api.getLinks({
+        filterByFormula: `FIND("${alias}", {alias})`,
+      });
+      if (data.records.length > 0)
+        throw {
+          error: {
+            status: 'Bad Request',
+            message: `Alias ${alias} already exists`,
+          },
+        };
+    } catch (err) {
+      return res.status(400).json(err);
+    }
+  }
+
   try {
     const { data } = await api.addLink({
       uid: uid(),
       link,
+      alias,
     });
     const { uid: linkUid } = data.records[0].fields;
 
     res.status(201).json({
       data: {
-        link: `${linkDomain}/${linkUid}`,
+        link: `${linkDomain}/${alias.trim() ? alias : linkUid}`,
       },
     });
   } catch (err) {

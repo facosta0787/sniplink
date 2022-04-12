@@ -11,6 +11,7 @@ interface IReqconfig {
 interface ILink {
   uid: string;
   link: string;
+  alias?: string | null;
 }
 
 interface IAirtable {

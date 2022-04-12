@@ -13,7 +13,12 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
   }
 
   try {
-    const params = { filterByFormula: `FIND("${pathname}", {uid})` };
+    const params = {
+      filterByFormula: `OR(
+        FIND("${pathname}", {uid}),
+        FIND("${pathname}", {alias})
+      )`,
+    };
     const { data } = await api.getLinks(params);
     const url = data.records[0].fields.link;
     return NextResponse.redirect(url);

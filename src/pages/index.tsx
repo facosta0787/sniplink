@@ -23,12 +23,13 @@ const Home: NextPage = () => {
   ): void => {
     event?.preventDefault();
     const shorten = event?.currentTarget.inputShorten?.value;
+    const alias = event?.currentTarget.alias?.value;
     if (!isURL(shorten)) {
       setError("❌ Oops! that doesn't look a URL");
       setTimeout(() => setError(null), 2000);
       return;
     }
-    linksMutation.mutate(shorten);
+    linksMutation.mutate({ shorten, alias });
   };
 
   const handleCopyClick = (): void => {
@@ -89,13 +90,18 @@ const Home: NextPage = () => {
 
 export default Home;
 
-async function createLink(shorten: string): Promise<any> {
+interface ICreateLinkParams {
+  shorten: string;
+  alias?: string;
+}
+
+async function createLink({ shorten, alias }: ICreateLinkParams): Promise<any> {
   const response = await fetch('/api/v1/link', {
     headers: new Headers({
       'Content-type': 'application/json',
     }),
     method: 'post',
-    body: JSON.stringify({ link: shorten }),
+    body: JSON.stringify({ link: shorten, alias }),
   });
 
   if (!response.ok) {

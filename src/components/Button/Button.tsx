@@ -5,7 +5,7 @@ import cs from 'classnames';
 interface ButtonProps {
   children: string;
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
-  className?: string;
+  className?: string | null;
   [key: string]: any;
 }
 
@@ -18,7 +18,7 @@ const Button: FC<ButtonProps> = ({
   return (
     <button
       className={cs(scss.button, {
-        [className]: Boolean(className),
+        [className as string]: Boolean(className),
       })}
       onClick={onClick}
       {...restProps}
