@@ -13,10 +13,15 @@ $xl: 1536px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: all 0.5s ease-in-out 0s;
 
   .icon {
     display: inline-block;
     transform: rotate(-130deg);
+  }
+
+  @media screen and (max-width: $sm) {
+    margin-top: 50%;
   }
 }
 
@@ -24,12 +29,12 @@ $xl: 1536px;
   width: 80%;
   display: flex;
   flex-direction: column;
-  // align-items: center;
+  transition: width 0.5s ease-in-out 0s;
 
   input {
     width: 100%;
     border: 1px solid #eaeaea;
-    height: 30px;
+    height: 32px;
     padding: 0 12px;
     border-radius: 5px;
     box-sizing: border-box;
@@ -47,11 +52,18 @@ $xl: 1536px;
     width: 100%;
     margin-top: 0.5rem;
     display: flex;
+    align-items: center;
 
     input {
       width: 80%;
       margin-right: auto;
     }
+  }
+
+  .submitButton {
+    height: 30px;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .urlStringError {
@@ -60,7 +72,7 @@ $xl: 1536px;
     font-size: 0.875rem;
     height: 0;
     overflow: hidden;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.5s ease-in-out;
   }
 
   .urlStringErrorShow {
@@ -71,6 +83,28 @@ $xl: 1536px;
   .aliasCaption {
     color: #919191;
     font-size: 0.75rem;
+  }
+
+  @media screen and (max-width: $sm) {
+    width: 95%;
+
+    input {
+      height: 40px;
+    }
+
+    .formGroup {
+      display: flex;
+      flex-direction: column;
+      input {
+        width: 100%;
+      }
+
+      button {
+        margin-top: 8px;
+        width: 100%;
+        height: 40px;
+      }
+    }
   }
 }
 
