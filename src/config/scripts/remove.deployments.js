@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import nodefetch from 'node-fetch';
-import color from 'chalk';
-import Ora from 'ora';
-import capitalize from 'lodash.capitalize';
+const fetch = require('node-fetch');
+const color = require('chalk');
+const Ora = require('ora');
+const capitalize = require('lodash.capitalize');
 
 const VERCEL_PROJECT_ID = process.env.VERCEL_PROJECT_ID;
 const VERCEL_TOKEN = process.env.VERCEL_TOKEN;
@@ -16,7 +16,7 @@ const spinner = new Ora({ indent: 2 });
 const headers = { Authorization: `Bearer ${VERCEL_TOKEN}` };
 
 async function fetcher(url, options = {}) {
-  const response = await nodefetch(url, { ...options, headers });
+  const response = await fetch(url, { ...options, headers });
   return response.json();
 }
 
