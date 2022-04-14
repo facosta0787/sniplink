@@ -69,7 +69,7 @@ deploy_review:
     - chmod +x config/scripts/review.deployment.sh
     - export REVIEW_ENV_NAME="review-$(echo $CI_COMMIT_REF_SLUG | cut -d'-' -f1,2)"
   script:
-    - echo $CI_MERGE_REQUEST_IID
+    - echo $CI_EXTERNAL_PULL_REQUEST_IID
     - echo $CI_COMMIT_REF_SLUG
     - echo $REVIEW_ENV_NAME
     - |
@@ -77,11 +77,11 @@ deploy_review:
       VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID \
       VERCEL_TOKEN=$VERCEL_TOKEN \
       CI_COMMIT_SHA=$CI_COMMIT_SHA \
-      REVIEW_URL=review-pr-$CI_MERGE_REQUEST_IID.sniplink.tk \
+      REVIEW_URL=review-pr-$CI_EXTERNAL_PULL_REQUEST_IID.sniplink.tk \
       config/scripts/./review.deployment.sh
   environment:
-    name: review-pr-$CI_MERGE_REQUEST_IID
-    url: https://review-pr-$CI_MERGE_REQUEST_IID.sniplink.tk
+    name: review-pr-$CI_EXTERNAL_PULL_REQUEST_IID
+    url: https://review-pr-$CI_EXTERNAL_PULL_REQUEST_IID.sniplink.tk
     on_stop: destroy_review
     auto_stop_in: 1 hour
   only:
@@ -96,11 +96,11 @@ destroy_review:
   script:
     - |
       VERCEL_TOKEN=$VERCEL_TOKEN \
-      REVIEW_URL=review-pr-$CI_MERGE_REQUEST_IID.sniplink.tk \
+      REVIEW_URL=review-pr-$CI_EXTERNAL_PULL_REQUEST_IID.sniplink.tk \
       config/scripts/./review.destroy.sh
   when: manual
   environment:
-    name: review-pr-$CI_MERGE_REQUEST_IID
+    name: review-pr-$CI_EXTERNAL_PULL_REQUEST_IID
     action: stop
   only:
     - merge_requests
