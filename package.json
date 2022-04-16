@@ -5,9 +5,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint && npm run lint:fix",
-    "lint:fix": "prettier --write .",
-    "deploy": "vercel --prod && VERCEL_PROJECT_ID=prj_wz6XX18S1ZOHnd4XXBYTG3JJoMr8 node src/config/scripts/remove.deployments.mjs"
+    "lint": "next lint && npm run prettier",
+    "prettier": "prettier --write .",
+    "deploy": "vercel --prod && VERCEL_PROJECT_ID=prj_wz6XX18S1ZOHnd4XXBYTG3JJoMr8 node src/config/scripts/remove.deployments.js"
   },
   "dependencies": {
     "axios": "^0.24.0",
