@@ -40,11 +40,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: chmod +x config/scripts/production.deploy.sh
       - name: Deploy stage to Vercel
         run: |
           VERCEL_ORG_ID=${{ secrets.VERCEL_ORG_ID }} \
           VERCEL_PROJECT_ID=${{ secrets.VERCEL_PROJECT_ID }} \
           VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN }} \
           CI_COMMIT_SHA=${{ github.sha }} \
-          config/scripts/./staging.deploy.sh
+          sh ./config/scripts/staging.deploy.sh
