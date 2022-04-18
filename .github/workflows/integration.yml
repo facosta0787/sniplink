@@ -35,6 +35,18 @@ jobs:
           CI_COMMIT_SHA=${{ github.sha }} \
           REVIEW_URL=review-pr-${{ github.event.number }}.sniplink.tk \
           sh ./src/config/scripts/review.deployment.sh
+      - uses: actions/github-script@v6
+        env:
+          REVIEW_APP_URL: review-pr-${{ github.event.number }}.sniplink.tk
+        with:
+          github-token: ${{secrets.GH_TOKEN}}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `Review app deployed at ${process.env.REVIEW_APP_URL}`
+            })
 
   # deploy_stage:
   #   runs-on: ubuntu-latest
