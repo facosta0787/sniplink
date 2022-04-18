@@ -13,7 +13,7 @@ jobs:
 
   deploy_preview:
     runs-on: ubuntu-latest
-    needs: [call_install_build]
+    # needs: [call_install_build]
     steps:
       - run: echo ${{ github.event.pull_request }}
 
