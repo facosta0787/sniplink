@@ -4,46 +4,36 @@ on:
   push:
     branches: [main]
   pull_request:
+    types: [opened, synchronize, reopened]
     branches: [main]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  call_install_build:
+    uses: ./.github/workflows/install-lint.yml
 
-    strategy:
-      matrix:
-        node-version: [14.x]
+  # deploy_stage:
+  #   runs-on: ubuntu-latest
+  #   environment:
+  #     name: staging
+  #     url: https://stage.sniplink.tk
 
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run lint
+  #   needs: [build]
 
-  deploy_stage:
-    runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       node-version: [14.x]
 
-    needs: [build]
-
-    strategy:
-      matrix:
-        node-version: [14.x]
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - name: Deploy stage to Vercel
-        run: |
-          VERCEL_ORG_ID=${{ secrets.VERCEL_ORG_ID }} \
-          VERCEL_PROJECT_ID=${{ secrets.VERCEL_PROJECT_ID }} \
-          VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN }} \
-          CI_COMMIT_SHA=${{ github.sha }} \
-          sh ./src/config/scripts/staging.deploy.sh
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #         cache: 'npm'
+  #     - name: Deploy stage to Vercel
+  #       run: |
+  #         VERCEL_ORG_ID=${{ secrets.VERCEL_ORG_ID }} \
+  #         VERCEL_PROJECT_ID=${{ secrets.VERCEL_PROJECT_ID }} \
+  #         VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN }} \
+  #         CI_COMMIT_SHA=${{ github.sha }} \
+  #         sh ./src/config/scripts/staging.deploy.sh
