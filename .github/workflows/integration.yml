@@ -11,6 +11,13 @@ jobs:
   call_install_build:
     uses: ./.github/workflows/install-lint.yml
 
+  deploy_preview:
+    runs-on: ubuntu-latest
+    needs: [call_install_build]
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo ${{ github.event }}
+
   # deploy_stage:
   #   runs-on: ubuntu-latest
   #   environment:
