@@ -4,18 +4,56 @@ on:
   push:
     branches: [main]
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, closed]
     branches: [main]
 
 jobs:
-  # call_install_build:
-  #   uses: ./.github/workflows/install-lint.yml
+  call_install_build:
+    uses: ./.github/workflows/install-lint.yml
 
   deploy_preview:
     runs-on: ubuntu-latest
-    # needs: [call_install_build]
+    if: ${{ github.event.action != 'closed' }}
+    needs: [call_install_build]
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
     steps:
-      - run: echo ${{ github.event.pull_request }}
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: Deploy preview app
+        run: |
+          VERCEL_ORG_ID=${{ secrets.VERCEL_ORG_ID }} \
+          VERCEL_PROJECT_ID=${{ secrets.VERCEL_PROJECT_ID }} \
+          VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN }} \
+          CI_COMMIT_SHA=${{ github.sha }} \
+          REVIEW_URL=review-pr-${{ github.event.number }}.sniplink.tk \
+          sh ./src/config/scripts/review.deployment.sh
+      - name: Comment PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          recreate: true
+          header: sniplink-review-app
+          message: 🚀 Release review app ${{ github.sha }} to <https://review-pr-${{ github.event.number }}.sniplink.tk>
+
+      # - uses: actions/github-script@v6
+      #   env:
+      #     REVIEW_APP_URL: https://review-pr-${{ github.event.number }}.sniplink.tk
+      #   with:
+      #     github-token: ${{secrets.GH_TOKEN}}
+      #     script: |
+      #       github.rest.issues.createComment({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: `🚀 Review app deployed at <${process.env.REVIEW_APP_URL}>`
+      #       })
 
   # deploy_stage:
   #   runs-on: ubuntu-latest
