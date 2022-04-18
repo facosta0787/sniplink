@@ -13,7 +13,7 @@ jobs:
 
   deploy_preview:
     runs-on: ubuntu-latest
-    if: ${{ github.event.action != "closed" }}
+    if: ${{ github.event.action != 'closed' }}
     needs: [call_install_build]
 
     strategy:
