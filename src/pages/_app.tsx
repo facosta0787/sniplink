@@ -1,7 +1,7 @@
 import type { AppProps } from 'next/app';
 import App from 'next/app';
 import { QueryClientProvider, QueryClient } from 'react-query';
-import { Envlabel } from 'src/components/Envlabel/Enlabel';
+import { Envlabel } from 'src/components/Envlabel';
 import '../shared/styles/globals.css';
 
 const queryClient = new QueryClient();
