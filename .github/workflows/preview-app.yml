@@ -1,8 +1,6 @@
-name: Node.js CI
+name: Preview Deploy
 
 on:
-  push:
-    branches: [main]
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches: [main]

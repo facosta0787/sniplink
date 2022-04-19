@@ -1,0 +1,35 @@
+name: Production Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  install_lint:
+    uses: ./.github/workflows/install-lint.yml
+
+  deploy_preview:
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://sniplink.tk
+    needs: [install_lint]
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: Deploy production
+        run: |
+          VERCEL_ORG_ID=${{ secrets.VERCEL_ORG_ID }} \
+          VERCEL_PROJECT_ID=${{ secrets.VERCEL_PROJECT_ID }} \
+          VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN }} \
+          CI_COMMIT_SHA=${{ github.sha }} \
+          sh ./src/config/scripts/production.deploy.sh
