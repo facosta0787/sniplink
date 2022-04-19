@@ -1,15 +1,32 @@
 import type { AppProps } from 'next/app';
+import App from 'next/app';
 import { QueryClientProvider, QueryClient } from 'react-query';
+import { Envlabel } from 'src/components/Envlabel';
 import '../shared/styles/globals.css';
 
 const queryClient = new QueryClient();
 
-function MyApp({ Component, pageProps }: AppProps) {
+interface MyAppProps extends AppProps {
+  host: string;
+}
+
+function MyApp(props: MyAppProps) {
+  const { Component, pageProps, host } = props;
   return (
     <QueryClientProvider client={queryClient}>
       <Component {...pageProps} />
+      <Envlabel host={host} />
     </QueryClientProvider>
   );
 }
+
+MyApp.getInitialProps = async (appContext: any) => {
+  const { req } = appContext.ctx;
+  const appProps = await App.getInitialProps(appContext);
+  return {
+    ...appProps,
+    host: req?.headers.host,
+  };
+};
 
 export default MyApp;
