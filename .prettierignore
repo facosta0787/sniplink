@@ -4,7 +4,6 @@
 .prettierrc
 .prettierignore
 .vscode/settings.json
-src/config/scripts
 jsconfig.json
 package.json
 package-lock.json
