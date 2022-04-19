@@ -1,12 +1,6 @@
 name: Stage deploy
 
-on:
-  workflow_dispatch:
-    inputs:
-      env-to-deploy:
-        description: 'Environment deployment.'
-        required: true
-        default: stage
+on: workflow_dispatch
 
 jobs:
   deploy_stage:
@@ -14,8 +8,6 @@ jobs:
     environment:
       name: stage
       url: https://stage.sniplink.tk
-
-    needs: [call_install_build]
 
     strategy:
       matrix:
