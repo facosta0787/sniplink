@@ -1,11 +1,14 @@
 name: Stage deploy
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      env-to-deploy:
+        description: 'Environment deployment.'
+        required: true
+        default: stage
 
 jobs:
-  call_install_build:
-    uses: ./.github/workflows/install-lint.yml
-
   deploy_stage:
     runs-on: ubuntu-latest
     environment:

@@ -4,12 +4,6 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches: [main]
-  workflow_dispatch:
-    inputs:
-      env-to-deploy:
-        description: 'Environment deployment.'
-        required: true
-        default: preview
 
 jobs:
   call_install_build:
@@ -17,7 +11,7 @@ jobs:
 
   remove_preview:
     runs-on: ubuntu-latest
-    if: ${{ (github.event.action == 'closed') && (github.event.pull_request.merged) && (github.event.inputs.env-to-deploy != 'stage') }}
+    if: ${{ (github.event.action == 'closed') && (github.event.pull_request.merged) }}
     needs: [call_install_build]
 
     strategy:
@@ -41,7 +35,7 @@ jobs:
 
   deploy_preview:
     runs-on: ubuntu-latest
-    if: ${{ (github.event.action != 'closed') && (github.event.inputs.env-to-deploy != 'stage') }}
+    if: ${{ (github.event.action != 'closed') }}
     needs: [call_install_build]
 
     strategy:
@@ -69,32 +63,3 @@ jobs:
           recreate: true
           header: sniplink-review-app
           message: 🚀 Release review app ${{ github.sha }} to <https://review-pr-${{ github.event.number }}.sniplink.tk>
-
-  deploy_stage:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.env-to-deploy == 'stage' }}
-    environment:
-      name: stage
-      url: https://stage.sniplink.tk
-
-    needs: [call_install_build]
-
-    strategy:
-      matrix:
-        node-version: [14.x]
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - name: Deploy stage to Vercel
-        run: |
-          VERCEL_ORG_ID=${{ secrets.VERCEL_ORG_ID }} \
-          VERCEL_PROJECT_ID=${{ secrets.VERCEL_PROJECT_ID }} \
-          VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN }} \
-          CI_COMMIT_SHA=${{ github.sha }} \
-          STAGE_URL=stage.sniplink.tk \
-          sh ./src/config/scripts/staging.deploy.sh
