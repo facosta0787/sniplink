@@ -5,7 +5,6 @@ interface EnvlabelProps {
 }
 
 export const Envlabel: FC<EnvlabelProps> = ({ host }) => {
-  console.log('*** host', host);
   const styles = {
     display: 'inline-block',
     position: 'fixed',
@@ -20,9 +19,18 @@ export const Envlabel: FC<EnvlabelProps> = ({ host }) => {
   } as const;
 
   const getLabelText = (): string => {
+    if (host.includes('review')) {
+      return host
+        .split('.')[0]
+        .replace(/review-/g, '')
+        .toUpperCase();
+    }
+    if (host.includes('stage')) return 'stage';
     if (host.includes('localhost')) return 'development';
     return 'production';
   };
+
+  if (getLabelText() === 'production') return null;
 
   return (
     <div style={styles}>
