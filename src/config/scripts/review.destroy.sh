@@ -7,12 +7,12 @@ VERCEL_DEPLOYMENT_ID=$(curl -k "https://api.vercel.com/v2/now/aliases/$URL" \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
-| config/scripts/bin/jq-linux ".deploymentId" \
+| ./bin/jq-linux ".deploymentId" \
 | sed 's/"//g')
 
 if [ -z ${VERCEL_DEPLOYMENT_ID+x} ] || [ -z ${VERCEL_DEPLOYMENT_ID} ]; then
   echo "Deployment not found"
-  exit 1
+  exit 0
 else
   echo "Removing deployment '$VERCEL_DEPLOYMENT_ID'"
   curl -k -X DELETE "https://api.vercel.com/v11/now/deployments/$VERCEL_DEPLOYMENT_ID" -H "Authorization: Bearer $TOKEN"

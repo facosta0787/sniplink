@@ -9,6 +9,25 @@ jobs:
   call_install_build:
     uses: ./.github/workflows/install-lint.yml
 
+  remove_preview:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.action == 'closed' }}
+    needs: [call_install_build]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: |
+          chmod +x ./src/config/scripts/bin/jq-linux
+      - name: Remove previous review app
+        run: |
+          VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN }} \
+          REVIEW_URL=review-pr-${{ github.event.number }}.sniplink.tk \
+          sh config/scripts/review.destroy.sh
+
   deploy_preview:
     runs-on: ubuntu-latest
     if: ${{ github.event.action != 'closed' }}
