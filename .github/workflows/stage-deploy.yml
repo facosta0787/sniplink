@@ -1,0 +1,30 @@
+name: Stage deploy
+
+on: workflow_dispatch
+
+jobs:
+  deploy_stage:
+    runs-on: ubuntu-latest
+    environment:
+      name: stage
+      url: https://stage.sniplink.tk
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: Deploy stage to Vercel
+        run: |
+          VERCEL_ORG_ID=${{ secrets.VERCEL_ORG_ID }} \
+          VERCEL_PROJECT_ID=${{ secrets.VERCEL_PROJECT_ID }} \
+          VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN }} \
+          CI_COMMIT_SHA=${{ github.sha }} \
+          STAGE_URL=stage.sniplink.tk \
+          sh ./src/config/scripts/staging.deploy.sh
