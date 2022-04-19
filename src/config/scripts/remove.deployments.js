@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const fetch = require('node-fetch');
+const fetch = require('node-fetch/lib/index.js');
 const color = require('chalk');
 const Ora = require('ora');
 const capitalize = require('lodash.capitalize');
