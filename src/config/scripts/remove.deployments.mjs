@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import nodefetch       from 'node-fetch'
+import nodefetch       from 'node-fetch/src/index.js'
 import color       from 'chalk'
 import Ora         from 'ora'
 import capitalize  from 'lodash.capitalize'
