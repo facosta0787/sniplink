@@ -22,14 +22,22 @@ jobs:
         node-version: [14.x]
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkingout the repository
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+
       - name: Deploy production
         run: |
           VERCEL_ORG_ID=${{ secrets.VERCEL_ORG_ID }} \
