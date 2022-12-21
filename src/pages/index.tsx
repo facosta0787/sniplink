@@ -1,4 +1,4 @@
-import type { NextPage, NextPageContext } from 'next';
+import type { NextPage } from 'next';
 import type { FormEvent } from 'react';
 
 import Head from 'next/head';

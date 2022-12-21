@@ -14,32 +14,15 @@ interface ILink {
   alias?: string | null;
 }
 
+interface IObjectToQueryStringParams {
+  [key: string]: string;
+}
+
 interface IAirtable {
   tableid: string | undefined;
   apiurl: string;
   getLinks(params?: IObjectToQueryStringParams): Promise<any>;
   addLink(link: ILink): Promise<any>;
-}
-
-function airtable(): IAirtable {
-  const config = {
-    tableid: env.AT_TABLEID,
-    apiurl: 'https://api.airtable.com/v0',
-  };
-
-  const reqconfig: IReqconfig = {
-    headers: {
-      Authorization: `Bearer ${env.AT_APIKEY}`,
-      'Content-Type': 'application/json',
-    },
-    baseURL: `${config.apiurl}/${config.tableid}`,
-  };
-
-  return {
-    ...config,
-    ...fetchLinks(reqconfig),
-    ...createLink(reqconfig),
-  };
 }
 
 function fetchLinks(reqconfig: IReqconfig) {
@@ -76,15 +59,32 @@ function createLink(reqconfig: IReqconfig) {
   };
 }
 
-interface IObjectToQueryStringParams {
-  [key: string]: string;
-}
-
 function objectToQueryString(params?: IObjectToQueryStringParams) {
   if (!params) return;
   return Object.keys(params)
     .map((key) => key + '=' + params[key])
     .join('&');
+}
+
+function airtable(): IAirtable {
+  const config = {
+    tableid: env.AT_TABLEID,
+    apiurl: 'https://api.airtable.com/v0',
+  };
+
+  const reqconfig: IReqconfig = {
+    headers: {
+      Authorization: `Bearer ${env.AT_APIKEY}`,
+      'Content-Type': 'application/json',
+    },
+    baseURL: `${config.apiurl}/${config.tableid}`,
+  };
+
+  return {
+    ...config,
+    ...fetchLinks(reqconfig),
+    ...createLink(reqconfig),
+  };
 }
 
 export default airtable;
