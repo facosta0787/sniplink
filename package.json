@@ -6,11 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint && npm run prettier",
     "prettier": "prettier --write .",
-    "deploy": "vercel --prod && VERCEL_PROJECT_ID=prj_wz6XX18S1ZOHnd4XXBYTG3JJoMr8 node src/config/scripts/remove.deployments.js"
+    "lint": "next lint && npm run prettier",
+    "db:generate": "dotenv -e .env.local prisma generate",
+    "db:migrate": "dotenv -e .env.local prisma migrate dev"
   },
   "dependencies": {
+    "@prisma/client": "^4.8.0",
     "axios": "0.24.0",
     "classnames": "2.3.1",
     "next": "12.1.5",
@@ -25,6 +27,7 @@
     "@types/react": "17.0.36",
     "@types/validator": "13.7.0",
     "chalk": "4.1.2",
+    "dotenv-cli": "^6.0.0",
     "eslint": "7.32.0",
     "eslint-config-next": "12.0.4",
     "eslint-config-prettier": "8.5.0",
@@ -32,7 +35,7 @@
     "node-fetch": "2.6.7",
     "ora": "5.4.1",
     "prettier": "2.6.2",
-    "typescript": "4.5.2",
-    "vercel": "24.1.0"
+    "prisma": "^4.8.0",
+    "typescript": "4.5.2"
   }
 }

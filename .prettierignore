@@ -5,7 +5,7 @@
 .prettierignore
 .vscode/settings.json
 jsconfig.json
-package.json
+# package.json
 package-lock.json
 next.config.js
 tsconfig.json
