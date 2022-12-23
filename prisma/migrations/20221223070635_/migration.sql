@@ -8,5 +8,6 @@ CREATE TABLE `links` (
     `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `links_hash_key`(`hash`),
+    UNIQUE INDEX `links_alias_key`(`alias`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

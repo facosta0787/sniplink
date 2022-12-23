@@ -16,7 +16,7 @@ model Link {
   id        String   @id @default(cuid())
   hash      String   @unique
   link      String
-  alias     String?
+  alias     String?  @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

@@ -2,24 +2,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { config } from 'src/config/env';
 import { uid } from 'src/utils/uid-generator';
-import airtable from 'src/lib/airtable';
 import Router from 'src/lib/router';
+import db from 'src/lib/db';
+import { create } from 'domain';
 
-const api = airtable();
 const router = Router();
 const linkDomain = config.LINK_DOMAIN;
-
-router.get(async function (req: NextApiRequest, res: NextApiResponse) {
-  const { alias } = req.query;
-  try {
-    const { data } = await api.getLinks({
-      filterByFormula: `FIND("${alias}", {alias})`,
-    });
-    res.json(data.records);
-  } catch (err) {
-    res.status(400).json({ message: 'Unexpected Error' });
-  }
-});
 
 router.post(async function (req: NextApiRequest, res: NextApiResponse) {
   const { link, alias } = req.body;
@@ -32,37 +20,40 @@ router.post(async function (req: NextApiRequest, res: NextApiResponse) {
     });
   }
 
-  if (alias !== '') {
+  if (alias && alias !== '') {
     try {
-      const { data } = await api.getLinks({
-        filterByFormula: `FIND("${alias}", {alias})`,
+      const foundLink = await db.link.find({
+        alias,
       });
-      if (data.records.length > 0)
+      if (foundLink) {
         throw {
           error: {
             status: 'Bad Request',
             message: `Alias ${alias} already exists`,
           },
+          data: foundLink,
         };
+      }
     } catch (err) {
-      return res.status(400).json(err);
+      console.error('api/v2/links:error ', err);
+      res.status(400).json(err);
     }
   }
 
-  try {
-    const { data } = await api.addLink({
-      uid: uid(),
-      link,
-      alias,
-    });
-    const { uid: linkUid } = data.records[0].fields;
+  const newLink = alias ? { hash: uid(), link, alias } : { hash: uid(), link };
 
-    res.status(201).json({
+  try {
+    const created = await db.link.create(newLink);
+
+    return res.status(201).json({
       data: {
-        link: `${linkDomain}/${alias.trim() ? alias : linkUid}`,
+        link: `${linkDomain}/${
+          created.alias?.trim() ? created.alias : created.hash
+        }`,
       },
     });
   } catch (err) {
+    console.error('api/v2/links:error ', err);
     return res.status(400).json({ message: 'Unexpected Error' });
   }
 });
