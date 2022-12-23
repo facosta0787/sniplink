@@ -1,4 +1,6 @@
 import { config as env } from 'src/config/env';
+import type { IObjectToQueryStringParams } from '../utils/object-to-query-string';
+import { objectToQueryString } from '../utils/object-to-query-string';
 
 interface IReqconfig {
   headers: {
@@ -12,10 +14,6 @@ interface ILink {
   uid: string;
   link: string;
   alias?: string | null;
-}
-
-interface IObjectToQueryStringParams {
-  [key: string]: string;
 }
 
 interface IAirtable {
@@ -57,13 +55,6 @@ function createLink(reqconfig: IReqconfig) {
       return { data };
     },
   };
-}
-
-function objectToQueryString(params?: IObjectToQueryStringParams) {
-  if (!params) return;
-  return Object.keys(params)
-    .map((key) => key + '=' + params[key])
-    .join('&');
 }
 
 function airtable(): IAirtable {
