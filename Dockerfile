@@ -21,10 +21,10 @@ WORKDIR /sniplink
 
 COPY package*.json ./
 
-RUN npm install --include=dev
+RUN npm install --include=dev --no-audit --no-fund
 COPY . .
 RUN npx prisma generate
-RUN npx prisma deploy
+RUN npx prisma migrate deploy
 
 RUN npm run build
 
