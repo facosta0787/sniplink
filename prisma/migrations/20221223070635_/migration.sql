@@ -2,7 +2,7 @@
 CREATE TABLE `links` (
     `id` VARCHAR(191) NOT NULL,
     `hash` VARCHAR(191) NOT NULL,
-    `link` VARCHAR(191) NOT NULL,
+    `link` TEXT NOT NULL,
     `alias` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
