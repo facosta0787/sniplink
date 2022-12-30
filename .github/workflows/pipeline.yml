@@ -6,31 +6,31 @@ on:
     branches: [main]
 
 jobs:
-  lint:
-    runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        node-version: [16.16.0]
-    steps:
-      - name: Checking out
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Using node ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - name: Installing Dependencies
-        run: npm ci --no-audit --no-fund
-      - name: Linting Code
-        run: npm run lint
-      - name: Printing Some Variables
-        run: |
-          echo '${{ toJSON(github) }}'
+  # lint:
+  #   runs-on: ubuntu-22.04
+  #   strategy:
+  #     matrix:
+  #       node-version: [16.16.0]
+  #   steps:
+  #     - name: Checking out
+  #       uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Using node ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #         cache: 'npm'
+  #     - name: Installing Dependencies
+  #       run: npm ci --no-audit --no-fund
+  #     - name: Linting Code
+  #       run: npm run lint
+  #     - name: Printing Some Variables
+  #       run: |
+  #         echo '${{ toJSON(github) }}'
 
   preview_deploy:
-    needs: [lint]
+    # needs: [lint]
     runs-on: ubuntu-22.04
     if: ${{ (github.event.action != 'closed') && (github.event_name != 'push') }}
     strategy:
@@ -50,4 +50,6 @@ jobs:
         run: npm ci --no-audit --no-fund
       - name: Deploying Preview App
         run: |
-          npx --no-install caprover -V
+          CAPROVER_URL=${{ secrets.CAPROVER_URL }} \
+          CAPROVER_KEY=${{ secrets.CAPROVER_KEY }} \
+          node .src/config/scripts/prepare-env.js
