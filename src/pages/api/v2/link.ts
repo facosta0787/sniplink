@@ -4,10 +4,24 @@ import { config } from 'src/config/env';
 import { uid } from 'src/utils/uid-generator';
 import Router from 'src/lib/router';
 import db from 'src/lib/db';
-import { create } from 'domain';
 
 const router = Router();
 const linkDomain = config.LINK_DOMAIN;
+
+router.get(async function (req: NextApiRequest, res: NextApiResponse) {
+  try {
+    const links = await db.conn.link.findMany();
+
+    return res.status(201).json({
+      data: {
+        links,
+      },
+    });
+  } catch (err) {
+    console.error('api/v2/links:error ', err);
+    return res.status(400).json({ message: 'Unexpected Error' });
+  }
+});
 
 router.post(async function (req: NextApiRequest, res: NextApiResponse) {
   const { link, alias } = req.body;
@@ -47,9 +61,7 @@ router.post(async function (req: NextApiRequest, res: NextApiResponse) {
 
     return res.status(201).json({
       data: {
-        link: `${linkDomain}/${
-          created.alias?.trim() ? created.alias : created.hash
-        }`,
+        link: `${linkDomain}/${created.alias?.trim() ? created.alias : created.hash}`,
       },
     });
   } catch (err) {
