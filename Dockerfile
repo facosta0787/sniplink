@@ -26,7 +26,7 @@ RUN npm install --include=dev --no-audit --no-fund
 COPY . .
 RUN npx prisma generate
 # RUN echo $ENV
-RUN if [ $ENV == "production" ] ; then npx prisma migrate deploy ; else echo "⚠️ Not for production." ; fi
+RUN if [ "$ENV" = "production" ] ; then npx prisma migrate deploy ; else echo "⚠️ Not for production." ; fi
 RUN npm run build
 
 CMD ["npm", "start"]
