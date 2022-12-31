@@ -29,6 +29,10 @@ const DEFAULT_APP_CONFIG = {
       key: 'DATABASE_URL',
       value: DB_URL,
     },
+    {
+      key: 'IS_PRODUCTION',
+      value: 'true',
+    },
   ],
 };
 

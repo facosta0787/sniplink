@@ -1,7 +1,7 @@
 FROM node:16.16.0
 RUN npm install -g npm@9.2.0
 
-ARG PRODUCTION=${PRODUCTION}
+ARG IS_PRODUCTION=${IS_PRODUCTION}
 ARG AT_APIKEY=${AT_APIKEY}
 ARG AT_TABLEID=${AT_TABLEID}
 ARG AT_SHEET=${AT_SHEET}
@@ -25,7 +25,7 @@ COPY package*.json ./
 RUN npm install --include=dev --no-audit --no-fund
 COPY . .
 RUN npx prisma generate
-RUN [[ ! -z "$PRODUCTION" ]] && npx prisma migrate deploy || echo "⚠️ Not for production."
+RUN [[ ! -z "$IS_PRODUCTION" ]] && npx prisma migrate deploy || echo "⚠️ Not for production."
 
 RUN npm run build
 
