@@ -22,16 +22,12 @@ const DEFAULT_APP_CONFIG = {
   description: '',
   envVars: [
     {
-      key: 'LINK_DOMAIN',
-      value: `https://${APP_NAME}.mdecloud.tk`,
-    },
-    {
-      key: 'DATABASE_URL',
-      value: DB_URL,
-    },
-    {
       key: 'ENV',
       value: 'production',
+    },
+    {
+      key: 'LINK_DOMAIN',
+      value: `https://${APP_NAME}.mdecloud.tk`,
     },
     {
       key: 'AT_APIKEY',
@@ -44,6 +40,14 @@ const DEFAULT_APP_CONFIG = {
     {
       key: 'AT_SHEET',
       value: 'links-dev',
+    },
+    {
+      key: 'DATABASE_URL',
+      value: DB_URL,
+    },
+    {
+      key: 'SHADOW_DATABASE_URL',
+      value: DB_URL.replace(/dev/g, 'shadow'),
     },
   ],
 };
