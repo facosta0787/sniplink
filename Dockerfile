@@ -25,7 +25,7 @@ COPY package*.json ./
 RUN npm install --include=dev --no-audit --no-fund
 COPY . .
 RUN npx prisma generate
-RUN [[ ! -z "$PRODUCTION" ]] && npx prisma migrate deploy || echo "Not for production."
+RUN [[ ! -z "$PRODUCTION" ]] && npx prisma migrate deploy || echo "⚠️ Not for production."
 
 RUN npm run build
 
