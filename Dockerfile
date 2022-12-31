@@ -25,14 +25,7 @@ COPY package*.json ./
 RUN npm install --include=dev --no-audit --no-fund
 COPY . .
 RUN npx prisma generate
-RUN <<EOF
-if [ $IS_PRODUCTION == "true" ]; then
-  npx prisma migrate deploy
-else
-  echo "⚠️ Not for production."
-fi
-EOF
-
+RUN if [[ $IS_PRODUCTION == "true" ]] ; then npx prisma migrate deploy ; else echo "⚠️ Not for production." ; fi
 RUN npm run build
 
 CMD ["npm", "start"]
