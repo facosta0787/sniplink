@@ -30,8 +30,20 @@ const DEFAULT_APP_CONFIG = {
       value: DB_URL,
     },
     {
-      key: 'IS_PRODUCTION',
-      value: 'true',
+      key: 'ENV',
+      value: 'production',
+    },
+    {
+      key: 'AT_APIKEY',
+      value: 'keyXmzyeYAKwrkwER',
+    },
+    {
+      key: 'AT_TABLEID',
+      value: 'appDUDBL6xpIZi5a8',
+    },
+    {
+      key: 'AT_SHEET',
+      value: 'links-dev',
     },
   ],
 };
