@@ -10,6 +10,7 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-22.04
+    if: ${{ github.event.action != 'closed' }}
     steps:
       - name: Checking out
         uses: actions/checkout@v3
@@ -28,7 +29,8 @@ jobs:
         run: |
           echo Action: '${{ toJSON(github.event.action) }}'
           echo EventName: '${{ toJSON(github.event_name) }}'
-          echo Branch: '${{ github.event.pull_request.head.ref }}'
+          echo PrHeadRef: '${{ github.event.pull_request.head.ref }}'
+          echo GitHubHeadRef: '${{ github.event.pull_request.head.ref }}'
 
   preview_deploy:
     needs: [lint]
@@ -93,7 +95,7 @@ jobs:
           --host ${{ secrets.CAPROVER_URL }} \
           --pass ${{ secrets.CAPROVER_KEY }} \
           --caproverApp sniplink \
-          --branch ${{ github.event.pull_request.head.ref }}
+          --branch main
       - name: Commenting PR
         uses: marocchino/sticky-pull-request-comment@v2
         with:
