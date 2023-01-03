@@ -94,6 +94,13 @@ jobs:
           --pass ${{ secrets.CAPROVER_KEY }} \
           --caproverApp sniplink \
           --branch ${{ github.event.pull_request.head.ref }}
+      - name: Commenting PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          recreate: true
+          header: Sniplink preview-app
+          message: |
+            🚀 Released preview app ${{ github.sha }} to <https://sniplink-pr-${{ github.event.number }}.mdecloud.tk>
 
   preview_destroy:
     needs: [production_deploy]
