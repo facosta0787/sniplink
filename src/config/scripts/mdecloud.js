@@ -111,7 +111,7 @@ async function deleteApp() {
   }
 }
 
-if (EVENT === 'destroy') {
+if (EVENT === 'destroy-env') {
   deleteApp().catch((err) => {
     console.error(err);
     process.exit(1);

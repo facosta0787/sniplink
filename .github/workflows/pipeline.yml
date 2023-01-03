@@ -67,6 +67,13 @@ jobs:
           --pass ${{ secrets.CAPROVER_KEY }} \
           --caproverApp sniplink-pr-${{ github.event.number }} \
           --branch ${{ github.event.pull_request.head.ref }}
+      - name: Commenting PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          recreate: true
+          header: Sniplink preview-app
+          message: |
+            🚀 Released preview app ${{ github.sha }} to <https://sniplink-pr-${{ github.event.number }}.mdecloud.tk>
 
   production_deploy:
     needs: [lint]
@@ -96,20 +103,14 @@ jobs:
           --pass ${{ secrets.CAPROVER_KEY }} \
           --caproverApp sniplink \
           --branch main
-      - name: Commenting PR
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          recreate: true
-          header: Sniplink preview-app
-          message: |
-            🚀 Released preview app ${{ github.sha }} to <https://sniplink-pr-${{ github.event.number }}.mdecloud.tk>
 
   preview_destroy:
-    needs: [production_deploy]
     runs-on: ubuntu-20.04
+    if: ${{ (github.event.action == 'closed') && (github.event.pull_request.merged == true) }}
     steps:
       - name: Destroying preview app
         run: |
+          EVENT=destroy-env
           CAPROVER_SERVER_URL=${{ secrets.CAPROVER_URL }} \
           CAPROVER_KEY=${{ secrets.CAPROVER_KEY }} \
           CAPROVER_APP_NAME=sniplink-pr-${{ github.event.number }} \
