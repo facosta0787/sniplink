@@ -59,7 +59,7 @@ jobs:
         run: |
           npx --no-install caprover deploy \
           --host ${{ secrets.CAPROVER_URL }} \
-          --pass ${{ secrets.CAPROVER_KEY }}
+          --pass ${{ secrets.CAPROVER_KEY }} \
           --caproverApp sniplink-pr-${{ github.event.number }} \
           --branch ${{ github.event.pull_request.head.ref }}
 
