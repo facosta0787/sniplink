@@ -1,6 +1,6 @@
-const fetch = require('node-fetch/lib/index');
 const Caprover = require('../../lib/caprover-api');
 
+const EVENT = process.env.EVENT || 'prepapre-env';
 const SERVER_URL = process.env.CAPROVER_SERVER_URL;
 const SERVER_KEY = process.env.CAPROVER_KEY;
 const APP_NAME = process.env.CAPROVER_APP_NAME;
@@ -99,7 +99,26 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+async function deleteApp() {
+  try {
+    const caprover = await Caprover.init(SERVER_URL, SERVER_KEY);
+    const deleted = await caprover.appsDelete({ appName: APP_NAME });
+    console.log(deleted.description);
+    process.exit(0);
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+}
+
+if (EVENT === 'destroy') {
+  deleteApp().catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+} else {
+  main().catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+}
