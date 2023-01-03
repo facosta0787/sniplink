@@ -39,20 +39,20 @@ jobs:
     steps:
       - name: Checking out
         uses: actions/checkout@v3
-      - name: Using node ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - name: Installing Dependencies
-        run: npm ci --no-audit --no-fund
-      - name: Creating Preview App
-        run: |
-          CAPROVER_SERVER_URL=${{ secrets.CAPROVER_URL }} \
-          CAPROVER_KEY=${{ secrets.CAPROVER_KEY }} \
-          CAPROVER_APP_NAME=sniplink-pr-${{ github.event.number }} \
-          CAPROVER_DB_URL=${{ secrets.CAPROVER_DEV_DB_URL }} \
-          node ./src/config/scripts/prepare-env.js
+      # - name: Using node ${{ matrix.node-version }}
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: ${{ matrix.node-version }}
+      #     cache: 'npm'
+      # - name: Installing Dependencies
+      #   run: npm ci --no-audit --no-fund
+      # - name: Creating Preview App
+      #   run: |
+      #     CAPROVER_SERVER_URL=${{ secrets.CAPROVER_URL }} \
+      #     CAPROVER_KEY=${{ secrets.CAPROVER_KEY }} \
+      #     CAPROVER_APP_NAME=sniplink-pr-${{ github.event.number }} \
+      #     CAPROVER_DB_URL=${{ secrets.CAPROVER_DEV_DB_URL }} \
+      #     node ./src/config/scripts/prepare-env.js
       # - name: Deploying preview app
       #   run: |
       #     npx --no-install caprover deploy \
