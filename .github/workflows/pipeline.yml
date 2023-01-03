@@ -39,6 +39,9 @@ jobs:
     steps:
       - name: Checking out
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
       # - name: Using node ${{ matrix.node-version }}
       #   uses: actions/setup-node@v3
       #   with:
@@ -59,7 +62,7 @@ jobs:
       #     --host ${{ secrets.CAPROVER_URL }} \
       #     --pass ${{ secrets.CAPROVER_KEY }} \
       #     --caproverApp sniplink-pr-${{ github.event.number }} \
-      #     --branch origin/${{ github.event.pull_request.head.ref }}
+      #     --branch ${{ github.event.pull_request.head.ref }}
       - name: Printing branches
         run: |
           git branch -v
