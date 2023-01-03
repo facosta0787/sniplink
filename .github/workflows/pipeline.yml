@@ -53,11 +53,14 @@ jobs:
           CAPROVER_APP_NAME=sniplink-pr-${{ github.event.number }} \
           CAPROVER_DB_URL=${{ secrets.CAPROVER_DEV_DB_URL }} \
           node ./src/config/scripts/prepare-env.js
-      - name: Deploying preview app
+      # - name: Deploying preview app
+      #   run: |
+      #     npx --no-install caprover deploy \
+      #     --host ${{ secrets.CAPROVER_URL }} \
+      #     --pass ${{ secrets.CAPROVER_KEY }} \
+      #     --caproverApp sniplink-pr-${{ github.event.number }} \
+      #     --branch origin/${{ github.event.pull_request.head.ref }}
+      - name: Printing branches
         run: |
-          npx --no-install caprover deploy \
-          --host ${{ secrets.CAPROVER_URL }} \
-          --pass ${{ secrets.CAPROVER_KEY }} \
-          --caproverApp sniplink-pr-${{ github.event.number }} \
-          --branch origin/${{ github.event.pull_request.head.ref }}
+          git branch -v
 
