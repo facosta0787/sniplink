@@ -42,13 +42,18 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
-      # - name: Using node ${{ matrix.node-version }}
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: ${{ matrix.node-version }}
-      #     cache: 'npm'
-      # - name: Installing Dependencies
-      #   run: npm ci --no-audit --no-fund
+      - name: Printing branches
+        run: |
+          git fetch --all
+          git checkout ${{ github.event.pull_request.head.ref }}
+          git branch -v
+      - name: Using node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: Installing Dependencies
+        run: npm ci --no-audit --no-fund
       # - name: Creating Preview App
       #   run: |
       #     CAPROVER_SERVER_URL=${{ secrets.CAPROVER_URL }} \
@@ -56,14 +61,11 @@ jobs:
       #     CAPROVER_APP_NAME=sniplink-pr-${{ github.event.number }} \
       #     CAPROVER_DB_URL=${{ secrets.CAPROVER_DEV_DB_URL }} \
       #     node ./src/config/scripts/prepare-env.js
-      # - name: Deploying preview app
-      #   run: |
-      #     npx --no-install caprover deploy \
-      #     --host ${{ secrets.CAPROVER_URL }} \
-      #     --pass ${{ secrets.CAPROVER_KEY }} \
-      #     --caproverApp sniplink-pr-${{ github.event.number }} \
-      #     --branch ${{ github.event.pull_request.head.ref }}
-      - name: Printing branches
+      - name: Deploying preview app
         run: |
-          git branch -v
+          npx --no-install caprover deploy \
+          --host ${{ secrets.CAPROVER_URL }} \
+          --pass ${{ secrets.CAPROVER_KEY }} \
+          --caproverApp sniplink-pr-${{ github.event.number }} \
+          --branch ${{ github.event.pull_request.head.ref }}
 
