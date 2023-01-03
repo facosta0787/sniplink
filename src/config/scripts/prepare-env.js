@@ -93,6 +93,8 @@ async function main() {
     process.exit(0);
   } catch (err) {
     console.error(err);
+    const deleted = await caprover.appsDelete({ appName: APP_NAME });
+    console.log(deleted.description);
     process.exit(1);
   }
 }

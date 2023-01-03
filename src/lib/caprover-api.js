@@ -25,6 +25,7 @@ class Caprover {
     this.updateAppEndpoint = this.serverUrl + '/api/v2/user/apps/appDefinitions/update';
     this.deleteAppEndpoint = this.serverUrl + '/api/v2/user/apps/appDefinitions/delete';
     this.enableSSLEndpoint = this.serverUrl + '/api/v2/user/apps/appDefinitions/enablebasedomainssl';
+    this.customDomainEndpoint = this.serverUrl + '/user/apps/appDefinitions/customdomain';
   }
 
   static async init(_serverUrl, _password) {
@@ -124,6 +125,20 @@ class Caprover {
       }),
     };
     const res = await fetch(this.deleteAppEndpoint, options);
+    return res.json();
+  }
+
+  async attachCustoDomain({ appName, domain }) {
+    const options = {
+      headers: { ...defaultHeaders, 'x-captain-auth': this.token },
+      method: 'POST',
+      body: JSON.stringify({
+        appName,
+        domain,
+      }),
+    };
+
+    const res = await fetch(this.customDomainEndpoint, options);
     return res.json();
   }
 }
