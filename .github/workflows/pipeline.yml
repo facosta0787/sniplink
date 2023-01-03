@@ -1,0 +1,114 @@
+name: CI/CD Pipeline
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checking out
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - name: Setting up node v16.16.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.16.0
+          cache: 'npm'
+      - name: Installing Dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Linting Code
+        run: npm run lint
+      - name: Printing Some Variables
+        run: |
+          echo Action: '${{ toJSON(github.event.action) }}'
+          echo EventName: '${{ toJSON(github.event_name) }}'
+          echo Branch: '${{ github.event.pull_request.head.ref }}'
+
+  preview_deploy:
+    needs: [lint]
+    runs-on: ubuntu-22.04
+    if: ${{ (github.event.action != 'closed') && (github.event_name != 'push') }}
+    steps:
+      - name: Checking out
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - name: Fetching all commits
+        run: |
+          git fetch --all
+          git checkout ${{ github.event.pull_request.head.ref }}
+      - name: Setting up node v16.16.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.16.0
+          cache: 'npm'
+      - name: Installing Dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Creating Preview App
+        run: |
+          CAPROVER_SERVER_URL=${{ secrets.CAPROVER_URL }} \
+          CAPROVER_KEY=${{ secrets.CAPROVER_KEY }} \
+          CAPROVER_APP_NAME=sniplink-pr-${{ github.event.number }} \
+          CAPROVER_DB_URL=${{ secrets.CAPROVER_DEV_DB_URL }} \
+          node ./src/config/scripts/mdecloud.js
+      - name: Deploying preview app
+        run: |
+          npx --no-install caprover deploy \
+          --host ${{ secrets.CAPROVER_URL }} \
+          --pass ${{ secrets.CAPROVER_KEY }} \
+          --caproverApp sniplink-pr-${{ github.event.number }} \
+          --branch ${{ github.event.pull_request.head.ref }}
+
+  production_deploy:
+    needs: [lint]
+    runs-on: ubuntu-22.04
+    if: ${{ (github.event_name == 'push') && (github.event.action != 'closed') }}
+    steps:
+      - name: Checking out
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - name: Fetching all commits
+        run: |
+          git fetch --all
+          git checkout ${{ github.event.pull_request.head.ref }}
+      - name: Setting up node v16.16.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.16.0
+          cache: 'npm'
+      - name: Installing Dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Deploying preview app
+        run: |
+          npx --no-install caprover deploy \
+          --host ${{ secrets.CAPROVER_URL }} \
+          --pass ${{ secrets.CAPROVER_KEY }} \
+          --caproverApp sniplink \
+          --branch ${{ github.event.pull_request.head.ref }}
+      - name: Commenting PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          recreate: true
+          header: Sniplink preview-app
+          message: |
+            🚀 Released preview app ${{ github.sha }} to <https://sniplink-pr-${{ github.event.number }}.mdecloud.tk>
+
+  preview_destroy:
+    needs: [production_deploy]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Destroying preview app
+        run: |
+          CAPROVER_SERVER_URL=${{ secrets.CAPROVER_URL }} \
+          CAPROVER_KEY=${{ secrets.CAPROVER_KEY }} \
+          CAPROVER_APP_NAME=sniplink-pr-${{ github.event.number }} \
+          node ./src/config/scripts/mdecloud.js

@@ -19,10 +19,10 @@ export const Envlabel: FC<EnvlabelProps> = ({ host }) => {
   } as const;
 
   const getLabelText = (): string => {
-    if (host.includes('review')) {
+    if (host.includes('sniplink-pr')) {
       return host
         .split('.')[0]
-        .replace(/review-/g, '')
+        .replace(/sniplink-/g, '')
         .toUpperCase();
     }
     if (host.includes('stage')) return 'stage';

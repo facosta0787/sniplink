@@ -28,6 +28,7 @@
     "@types/node": "16.11.10",
     "@types/react": "17.0.36",
     "@types/validator": "13.7.0",
+    "caprover": "^2.2.3",
     "chalk": "4.1.2",
     "dotenv-cli": "^6.0.0",
     "eslint": "7.32.0",
