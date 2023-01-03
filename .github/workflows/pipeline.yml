@@ -108,6 +108,18 @@ jobs:
     runs-on: ubuntu-20.04
     if: ${{ (github.event.action == 'closed') && (github.event.pull_request.merged == true) }}
     steps:
+      - name: Checking out
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 1
+      - name: Setting up node v16.16.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.16.0
+          cache: 'npm'
+      - name: Installing Dependencies
+        run: npm ci --no-audit --no-fund
       - name: Destroying preview app
         run: |
           EVENT=destroy-env
