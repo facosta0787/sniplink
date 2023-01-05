@@ -1,4 +1,4 @@
-FROM node:16.16.0
+FROM node:16.16.0-alpine
 RUN npm install -g npm@9.2.0
 
 ARG ENV=${ENV}
@@ -25,7 +25,14 @@ COPY package*.json ./
 RUN npm install --include=dev --no-audit --no-fund
 COPY . .
 RUN npx prisma generate
-RUN if [ "$ENV" = "production" ] ; then npx prisma migrate deploy ; else echo "❗️ Not for production." ; fi
+
+RUN if [[ "$ENV" = "production" ]] ; then \
+  echo "🛠 Running Migrations" ; \
+  npx prisma migrate deploy ; \
+  else \
+  echo "❗️ Not for production." ; \
+  fi
+
 RUN npm run build
 
 CMD ["npm", "start"]
