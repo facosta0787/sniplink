@@ -4,12 +4,12 @@ interface IConfig {
   AT_SHEET: string | undefined;
   IS_DEV: boolean;
   DB_CONNECTION_STRING: string | undefined;
-  LINK_DOMAIN: string | undefined;
+  LINK_DOMAIN: string;
 }
 
 export const config: IConfig = {
   IS_DEV: process.env.NODE_ENV !== 'production',
-  LINK_DOMAIN: process.env.LINK_DOMAIN,
+  LINK_DOMAIN: process.env.LINK_DOMAIN || '',
   AT_APIKEY: process.env.AT_APIKEY,
   AT_TABLEID: process.env.AT_TABLEID,
   AT_SHEET: process.env.AT_SHEET,
