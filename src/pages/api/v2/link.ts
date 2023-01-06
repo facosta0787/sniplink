@@ -8,18 +8,24 @@ import db from 'src/lib/db';
 const router = Router();
 const linkDomain = config.LINK_DOMAIN;
 
-router.get(async function (_, res: NextApiResponse) {
+router.get(async function (req: NextApiRequest, res: NextApiResponse) {
+  const { q } = req.query;
   try {
-    const links = await db.conn.link.findMany();
-
-    return res.status(200).json({
-      data: {
-        links,
+    const link = await db.conn.link.findFirstOrThrow({
+      where: {
+        OR: [{ hash: { equals: q } }, { alias: { equals: q } }],
       },
     });
-  } catch (err) {
-    console.error('api/v2/links:error ', err);
-    return res.status(400).json({ message: 'Unexpected Error', errString: JSON.stringify(err) });
+
+    return res.status(200).json({
+      link,
+    });
+  } catch (error: any) {
+    return res.status(400).json({
+      status: 400,
+      code: error.code,
+      name: error.name,
+    });
   }
 });
 

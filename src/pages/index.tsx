@@ -10,6 +10,23 @@ import { useMutation } from 'react-query';
 import { Button } from '../components/Button';
 import scss from '../shared/styles-pages/Home.module.scss';
 
+async function createLink({ shorten, alias }: ICreateLinkParams): Promise<any> {
+  const response = await fetch('/api/v2/link', {
+    headers: new Headers({
+      'Content-type': 'application/json',
+    }),
+    method: 'post',
+    body: JSON.stringify({ link: shorten, alias }),
+  });
+
+  if (!response.ok) {
+    const { error } = await response.json();
+    throw new Error(error.message);
+  }
+
+  return response.json();
+}
+
 const Home: NextPage = () => {
   const [result, setResult] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
@@ -23,12 +40,11 @@ const Home: NextPage = () => {
     },
   });
 
-  const handleSubmit = (
-    event: FormEvent<HTMLFormElement> | undefined,
-  ): void => {
-    event?.preventDefault();
-    const shorten = event?.currentTarget.inputShorten?.value;
-    const alias = event?.currentTarget.alias?.value;
+  const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+    const shorten = event.currentTarget.inputShorten?.value;
+    const alias = event.currentTarget.alias?.value;
+
     if (!isURL(shorten)) {
       setError("❌   Oops! that doesn't look a URL");
       setTimeout(() => setError(null), 3000);
@@ -48,10 +64,7 @@ const Home: NextPage = () => {
       <Head>
         <meta charSet="UTF-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
-        />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
       </Head>
       <div className={scss.container}>
         <h1>
@@ -65,20 +78,18 @@ const Home: NextPage = () => {
             autoFocus
             placeholder="Long URL"
           />
+
           <div className={scss.formGroup}>
-            <input
-              id="alias"
-              type="text"
-              autoComplete="off"
-              placeholder="Alias"
-            />
+            <input id="alias" type="text" autoComplete="off" placeholder="Alias" />
             <Button type="submit" className={scss.submitButton}>
               Shorten
             </Button>
           </div>
+
           <p className={scss.aliasCaption}>
             Alias must be hyphen separated. Example: this-is-my-alias
           </p>
+
           <span
             className={cs(scss.urlStringError, {
               [scss.urlStringErrorShow]: Boolean(error),
@@ -87,14 +98,10 @@ const Home: NextPage = () => {
             {error}
           </span>
         </form>
+
         {Boolean(result) && (
           <div className={scss.resultContainer}>
-            <a
-              href={result}
-              target="_blank"
-              rel="noreferrer"
-              className={scss.resultLink}
-            >
+            <a href={result} target="_blank" rel="noreferrer" className={scss.resultLink}>
               {result}
             </a>
             {copied ? <i>copied! 👍🏼</i> : <i onClick={handleCopyClick}>📑</i>}
@@ -110,21 +117,4 @@ export default Home;
 interface ICreateLinkParams {
   shorten: string;
   alias?: string;
-}
-
-async function createLink({ shorten, alias }: ICreateLinkParams): Promise<any> {
-  const response = await fetch('/api/v1/link', {
-    headers: new Headers({
-      'Content-type': 'application/json',
-    }),
-    method: 'post',
-    body: JSON.stringify({ link: shorten, alias }),
-  });
-
-  if (!response.ok) {
-    const { error } = await response.json();
-    throw new Error(error.message);
-  }
-
-  return response.json();
 }
