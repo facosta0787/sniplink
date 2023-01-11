@@ -1,10 +1,10 @@
 const Caprover = require('../../lib/caprover-api');
 
 const EVENT = process.env.EVENT || 'prepapre-env';
-const SERVER_URL = process.env.CAPROVER_SERVER_URL;
-const SERVER_KEY = process.env.CAPROVER_KEY;
-const APP_NAME = process.env.CAPROVER_APP_NAME;
-const DB_URL = process.env.CAPROVER_DB_URL;
+const SERVER_URL = process.env.CAPROVER_SERVER_URL || '';
+const SERVER_KEY = process.env.CAPROVER_KEY || '';
+const APP_NAME = process.env.CAPROVER_APP_NAME || '';
+const DB_URL = process.env.CAPROVER_DB_URL || '';
 
 const DEFAULT_APP_CONFIG = {
   appName: APP_NAME,
