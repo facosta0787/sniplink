@@ -27,13 +27,24 @@ async function createLink({ shorten, alias }: ICreateLinkParams): Promise<any> {
   return response.json();
 }
 
+interface IFormLink {
+  shorten: string;
+  alias: string;
+}
+
+const initialStateFormLink: IFormLink = { shorten: '', alias: '' };
+
 const Home: NextPage = () => {
   const [result, setResult] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState<boolean>(false);
+  const [formLink, setFormLink] = useState<IFormLink>(initialStateFormLink);
 
   const linksMutation = useMutation(createLink, {
-    onSuccess: ({ data }) => setResult(data.link),
+    onSuccess: ({ data }) => {
+      setResult(data.link);
+      setFormLink(initialStateFormLink);
+    },
     onError: (error: string) => {
       setError(`❌   ${error}`);
       setTimeout(() => setError(null), 3000);
@@ -42,8 +53,7 @@ const Home: NextPage = () => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    const shorten = event.currentTarget.inputShorten?.value;
-    const alias = event.currentTarget.alias?.value;
+    const { shorten, alias } = formLink;
 
     if (!isURL(shorten)) {
       setError("❌   Oops! that doesn't look a URL");
@@ -72,15 +82,28 @@ const Home: NextPage = () => {
         </h1>
         <form className={scss.shortenForm} onSubmit={handleSubmit}>
           <input
-            id="inputShorten"
+            id="shorten"
             type="text"
             autoComplete="off"
             autoFocus
             placeholder="Long URL"
+            value={formLink.shorten}
+            onChange={(event) =>
+              setFormLink((prev: IFormLink) => ({ ...prev, shorten: event.target.value }))
+            }
           />
 
           <div className={scss.formGroup}>
-            <input id="alias" type="text" autoComplete="off" placeholder="Alias" />
+            <input
+              id="alias"
+              type="text"
+              autoComplete="off"
+              placeholder="Alias"
+              value={formLink.alias}
+              onChange={(event) =>
+                setFormLink((prev: IFormLink) => ({ ...prev, alias: event.target.value }))
+              }
+            />
             <Button type="submit" className={scss.submitButton}>
               Shorten
             </Button>
