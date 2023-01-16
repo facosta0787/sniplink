@@ -59,7 +59,7 @@ jobs:
           CAPROVER_KEY=${{ secrets.CAPROVER_KEY }} \
           CAPROVER_APP_NAME=sniplink-pr-${{ github.event.number }} \
           CAPROVER_DB_URL=${{ secrets.CAPROVER_DEV_DB_URL }} \
-          node ./src/config/scripts/mdecloud.js
+          node ./config/scripts/mdecloud.js
       - name: Deploying preview app
         run: |
           npx --no-install caprover deploy \
@@ -126,4 +126,4 @@ jobs:
           CAPROVER_SERVER_URL=${{ secrets.CAPROVER_URL }} \
           CAPROVER_KEY=${{ secrets.CAPROVER_KEY }} \
           CAPROVER_APP_NAME=sniplink-pr-${{ github.event.number }} \
-          node ./src/config/scripts/mdecloud.js
+          node ./config/scripts/mdecloud.js

@@ -1,4 +1,4 @@
-const Caprover = require('../../lib/caprover-api');
+const Caprover = require('../../src/lib/caprover-api');
 
 const EVENT = process.env.EVENT || 'prepapre-env';
 const SERVER_URL = process.env.CAPROVER_SERVER_URL || '';
