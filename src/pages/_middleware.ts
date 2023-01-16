@@ -1,7 +1,7 @@
 import type { NextFetchEvent, NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import airtable from 'src/lib/airtable';
-import { config } from 'src/config/env';
+import { config } from 'config/env';
 
 const api = airtable();
 const { LINK_DOMAIN } = config;

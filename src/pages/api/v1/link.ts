@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { config } from 'src/config/env';
+import { config } from 'config/env';
 import { uid } from 'src/utils/uid-generator';
 import airtable from 'src/lib/airtable';
 import Router from 'src/lib/router';

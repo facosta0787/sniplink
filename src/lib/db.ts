@@ -1,4 +1,4 @@
-import { config as env } from '../config/env';
+import { config as env } from '../../config/env';
 import { PrismaClient, Link, Prisma } from '@prisma/client';
 
 interface ILinkCreateParams {
@@ -33,9 +33,7 @@ function linkCreate() {
 
 function linkFind() {
   return {
-    find: async function (
-      where: Prisma.LinkWhereUniqueInput,
-    ): Promise<Link | null> {
+    find: async function (where: Prisma.LinkWhereUniqueInput): Promise<Link | null> {
       const found = await prisma.link.findUnique({
         where,
       });
