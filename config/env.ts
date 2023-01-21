@@ -1,3 +1,5 @@
+import packageFile from '../package.json';
+
 interface IConfig {
   AT_APIKEY: string | undefined;
   AT_TABLEID: string | undefined;
@@ -5,6 +7,7 @@ interface IConfig {
   IS_DEV: boolean;
   DB_CONNECTION_STRING: string | undefined;
   LINK_DOMAIN: string;
+  NEXT_PUBLIC_REPO_URL: string;
 }
 
 export const config: IConfig = {
@@ -14,4 +17,5 @@ export const config: IConfig = {
   AT_TABLEID: process.env.AT_TABLEID,
   AT_SHEET: process.env.AT_SHEET,
   DB_CONNECTION_STRING: process.env.DATABASE_URL,
+  NEXT_PUBLIC_REPO_URL: packageFile.repository.url,
 };

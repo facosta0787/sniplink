@@ -21,6 +21,7 @@ $xl: 1536px;
   }
 
   @media screen and (max-width: $sm) {
+    height: auto;
     margin-top: 50%;
   }
 }
