@@ -46,6 +46,24 @@ jobs:
           vkey: ${{ secrets.VKEY }}
           file: "next.zip"
 
+  veracode_results:
+    needs: veracode_analysis
+    runs-on: ubuntu-latest
+    name: veracode import pipeline scan results to sarif
+    steps:
+      - name: Convert pipeline scan output to SARIF format
+        id: convert
+        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v1.0.5
+        with:
+          pipeline-results-json: results.json
+          output-results-sarif: veracode-results.sarif
+          finding-rule-level: "3:1:0"
+
+      - name: upload sarif file to repository
+        uses: github/codeql-action/upload-sarif@v2
+        with: # Path to SARIF file relative to the root of the repository
+          sarif_file: veracode-results.sarif
+
   preview_deploy:
     needs: [lint]
     runs-on: ubuntu-22.04
