@@ -32,6 +32,20 @@ jobs:
           echo PrHeadRef: '${{ github.event.pull_request.head.ref }}'
           echo GitHubHeadRef: '${{ github.event.pull_request.head.ref }}'
 
+  veracode_analysis:
+    runs-on: ubuntu-latest
+    name: veracode pipeline scan
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v3
+      - name: pipeline-scan action step
+        id: pipeline-scan
+        uses: veracode/Veracode-pipeline-scan-action@v1.0.8
+        with:
+          vid: ${{ secrets.VID }}
+          vkey: ${{ secrets.VKEY }}
+          file: "veracode-package.zip"
+
   preview_deploy:
     needs: [lint]
     runs-on: ubuntu-22.04
