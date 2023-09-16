@@ -45,6 +45,7 @@ jobs:
           vid: ${{ secrets.VID }}
           vkey: ${{ secrets.VKEY }}
           file: "next.zip"
+          filtered_json_output_file: "fileresults.json"
 
   veracode_results:
     needs: veracode_analysis
