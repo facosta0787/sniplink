@@ -44,7 +44,7 @@ jobs:
         with:
           vid: ${{ secrets.VID }}
           vkey: ${{ secrets.VKEY }}
-          file: "./veracode-package.zip"
+          file: "next.zip"
 
   preview_deploy:
     needs: [lint]
