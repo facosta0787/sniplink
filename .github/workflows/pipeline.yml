@@ -73,7 +73,7 @@ jobs:
           recreate: true
           header: Sniplink preview-app
           message: |
-            🚀 Released preview app ${{ github.sha }} to <https://sniplink-pr-${{ github.event.number }}.mdecloud.tk>
+            🚀 Released preview app ${{ github.sha }} to <https://sniplink-pr-${{ github.event.number }}.cloud.darkhome.co>
 
   production_deploy:
     needs: [lint]

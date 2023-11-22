@@ -27,7 +27,7 @@ const DEFAULT_APP_CONFIG = {
     },
     {
       key: 'LINK_DOMAIN',
-      value: `https://${APP_NAME}.mdecloud.tk`,
+      value: `https://${APP_NAME}.cloud.darkhome.co`,
     },
     {
       key: 'AT_APIKEY',
