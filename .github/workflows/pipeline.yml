@@ -107,7 +107,7 @@ jobs:
 
   preview_destroy:
     runs-on: ubuntu-20.04
-    if: ${{ github.event.action == 'closed' }}
+    if: ${{ github.event.action == 'closed' && github.event.pull_request.merged == true }}
     steps:
       - name: Checking out
         uses: actions/checkout@v3
