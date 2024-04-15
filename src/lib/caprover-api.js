@@ -24,12 +24,14 @@ class Caprover {
     this.registerAppEndpoint = this.serverUrl + '/api/v2/user/apps/appDefinitions/register';
     this.updateAppEndpoint = this.serverUrl + '/api/v2/user/apps/appDefinitions/update';
     this.deleteAppEndpoint = this.serverUrl + '/api/v2/user/apps/appDefinitions/delete';
-    this.enableSSLEndpoint = this.serverUrl + '/api/v2/user/apps/appDefinitions/enablebasedomainssl';
+    this.enableSSLEndpoint =
+      this.serverUrl + '/api/v2/user/apps/appDefinitions/enablebasedomainssl';
     this.customDomainEndpoint = this.serverUrl + '/user/apps/appDefinitions/customdomain';
   }
 
   static async init(_serverUrl, _password) {
     const loginUrl = _serverUrl + '/api/v2/login';
+    console.log(`>> loginUrl: ${_serverUrl}`);
     const res = await fetch(loginUrl, {
       headers: defaultHeaders,
       method: 'POST',
