@@ -54,6 +54,7 @@ const DEFAULT_APP_CONFIG = {
 
 async function main() {
   try {
+    const myserver = `"${SERVER_URL}"`;
     const caprover = await Caprover.init(SERVER_URL, SERVER_KEY);
     const {
       data: { appDefinitions },
@@ -61,7 +62,7 @@ async function main() {
     const app = appDefinitions.find((appDef) => appDef.appName === APP_NAME);
 
     if (!Boolean(app)) {
-      console.log('🏗 Creating app...', 'server: ', SERVER_URL);
+      console.log('🏗 Creating app...', `server: ${myserver}`);
       const newApp = await caprover.appsRegister({ appName: APP_NAME });
       console.log(newApp.description);
 
