@@ -61,7 +61,7 @@ async function main() {
     const app = appDefinitions.find((appDef) => appDef.appName === APP_NAME);
 
     if (!Boolean(app)) {
-      console.log('🏗 Creating app...');
+      console.log('🏗 Creating app...', 'server: ', SERVER_URL);
       const newApp = await caprover.appsRegister({ appName: APP_NAME });
       console.log(newApp.description);
 
