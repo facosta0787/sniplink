@@ -5,27 +5,14 @@ import Head from 'next/head';
 import isURL from 'validator/lib/isURL';
 import cs from 'classnames';
 import { useState } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
+import { createLink, getAllLinks } from '../lib/fetchers';
 
 import { Button } from '../components/Button';
+import { Table } from '../components/Table';
+import { LoadingPulse } from '../components/LoadingPulse';
 import scss from '../shared/styles-pages/Home.module.scss';
-
-async function createLink({ shorten, alias }: ICreateLinkParams): Promise<any> {
-  const response = await fetch('/api/v2/link', {
-    headers: new Headers({
-      'Content-type': 'application/json',
-    }),
-    method: 'post',
-    body: JSON.stringify({ link: shorten, alias }),
-  });
-
-  if (!response.ok) {
-    const { error } = await response.json();
-    throw new Error(error.message);
-  }
-
-  return response.json();
-}
+import CopyIcon from 'src/components/Icons/CopyIcon';
 
 interface IFormLink {
   shorten: string;
@@ -34,11 +21,17 @@ interface IFormLink {
 
 const initialStateFormLink: IFormLink = { shorten: '', alias: '' };
 
-const Home: NextPage = () => {
+interface IHomeProps {
+  linkDomain: string;
+}
+
+const Home: NextPage<IHomeProps> = ({ linkDomain }) => {
   const [result, setResult] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState<boolean>(false);
   const [formLink, setFormLink] = useState<IFormLink>(initialStateFormLink);
+
+  const { data: links = [], isLoading: isLoadingLinks } = useQuery('links', getAllLinks);
 
   const linksMutation = useMutation(createLink, {
     onSuccess: ({ data }) => {
@@ -46,7 +39,7 @@ const Home: NextPage = () => {
       setFormLink(initialStateFormLink);
     },
     onError: (error: string) => {
-      setError(`❌   ${error}`);
+      setError(error);
       setTimeout(() => setError(null), 3000);
     },
   });
@@ -56,7 +49,7 @@ const Home: NextPage = () => {
     const { shorten, alias } = formLink;
 
     if (!isURL(shorten)) {
-      setError("❌   Oops! that doesn't look a URL");
+      setError("Oops! that doesn't look a URL");
       setTimeout(() => setError(null), 3000);
       return;
     }
@@ -88,9 +81,7 @@ const Home: NextPage = () => {
             autoFocus
             placeholder="Long URL"
             value={formLink.shorten}
-            onChange={(event) =>
-              setFormLink((prev: IFormLink) => ({ ...prev, shorten: event.target.value }))
-            }
+            onChange={(event) => setFormLink((prev: IFormLink) => ({ ...prev, shorten: event.target.value }))}
           />
 
           <div className={scss.formGroup}>
@@ -100,18 +91,14 @@ const Home: NextPage = () => {
               autoComplete="off"
               placeholder="Alias"
               value={formLink.alias}
-              onChange={(event) =>
-                setFormLink((prev: IFormLink) => ({ ...prev, alias: event.target.value }))
-              }
+              onChange={(event) => setFormLink((prev: IFormLink) => ({ ...prev, alias: event.target.value }))}
             />
             <Button type="submit" className={scss.submitButton}>
               Shorten
             </Button>
           </div>
 
-          <p className={scss.aliasCaption}>
-            Alias must be hyphen separated. Example: this-is-my-alias
-          </p>
+          <p className={scss.aliasCaption}>Alias must be hyphen separated. Example: this-is-my-alias</p>
 
           <span
             className={cs(scss.urlStringError, {
@@ -127,17 +114,20 @@ const Home: NextPage = () => {
             <a href={result} target="_blank" rel="noreferrer" className={scss.resultLink}>
               {result}
             </a>
-            {copied ? <i>copied! 👍🏼</i> : <i onClick={handleCopyClick}>📑</i>}
+            {copied ? (
+              <i>copied!</i>
+            ) : (
+              <i onClick={handleCopyClick}>
+                <CopyIcon size={20} color="rgba(0,0,0,.5)" />
+              </i>
+            )}
           </div>
         )}
+
+        {isLoadingLinks ? <LoadingPulse /> : <Table linkDomain={linkDomain} links={links} />}
       </div>
     </>
   );
 };
 
 export default Home;
-
-interface ICreateLinkParams {
-  shorten: string;
-  alias?: string;
-}

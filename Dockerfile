@@ -1,5 +1,5 @@
-FROM node:16.16.0-alpine
-RUN npm install -g npm@9.2.0
+FROM node:20.12.2-alpine
+RUN npm install -g pnpm@9.0.4
 
 ARG ENV=${ENV}
 ARG AT_APIKEY=${AT_APIKEY}
@@ -20,9 +20,10 @@ EXPOSE 3000
 
 WORKDIR /sniplink
 
-COPY package*.json ./
+COPY package.json ./
+COPY pnpm-lock.yaml ./
 
-RUN npm install --include=dev --no-audit --no-fund
+RUN pnpm install --frozen-lockfile=true
 COPY . .
 RUN npx prisma generate
 
@@ -33,6 +34,6 @@ RUN if [[ "$ENV" = "production" ]] ; then \
   echo "❗️ Not for production." ; \
   fi
 
-RUN npm run build
+RUN pnpm build
 
-CMD ["npm", "start"]
+CMD ["pnpm", "start"]

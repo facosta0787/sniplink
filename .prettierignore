@@ -10,3 +10,4 @@ jsconfig.json
 package-lock.json
 next.config.js
 tsconfig.json
+pnpm-lock.yaml

@@ -1,0 +1,64 @@
+.table {
+  width: 95%;
+  margin-bottom: 1.5rem;
+  transition: all 0.5s ease-in-out 0s;
+
+  & > thead {
+    display: none;
+  }
+
+  tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  tr {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding-block: 1rem;
+    padding-inline: 0.5rem;
+  }
+}
+
+.aliasWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.copyIcon {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+.aliasLabel {
+  font-size: 0.75rem;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.alias {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.linkurl {
+  color: #2563eb !important;
+  font-size: 0.85rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

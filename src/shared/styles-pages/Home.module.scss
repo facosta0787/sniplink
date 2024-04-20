@@ -22,7 +22,6 @@ $xl: 1536px;
 
   @media screen and (max-width: $sm) {
     height: auto;
-    margin-top: 50%;
   }
 }
 
@@ -37,7 +36,7 @@ $xl: 1536px;
     border: 1px solid #eaeaea;
     height: 32px;
     padding: 0 12px;
-    border-radius: 5px;
+    border-radius: 12px;
     box-sizing: border-box;
     outline: 0 none black;
     position: relative;
@@ -74,6 +73,7 @@ $xl: 1536px;
     height: 0;
     overflow: hidden;
     transition: all 0.5s ease-in-out;
+    margin-bottom: 0.5rem;
   }
 
   .urlStringErrorShow {
@@ -110,11 +110,14 @@ $xl: 1536px;
 }
 
 .resultContainer {
-  margin-block-start: 1rem;
+  margin-block-start: 0.85rem;
+  margin-block-end: 0.85rem;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
 
   a {
     &:hover {
-      color: #0070f3;
       text-decoration: underline;
     }
   }
@@ -122,8 +125,8 @@ $xl: 1536px;
   i:last-child {
     font-size: 0.875rem;
     display: inline-block;
-    margin-left: 1.5rem;
+    margin-left: 0.75rem;
     cursor: pointer;
-    color: #29bc9b;
+    color: #10b981;
   }
 }

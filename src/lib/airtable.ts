@@ -26,10 +26,9 @@ interface IAirtable {
 function fetchLinks(reqconfig: IReqconfig) {
   return {
     getLinks: async function (params?: IObjectToQueryStringParams): Promise<any> {
-      const response = await fetch(
-        `${reqconfig.baseURL}/${env.AT_SHEET}?${objectToQueryString(params)}`,
-        { headers: new Headers(reqconfig.headers) },
-      );
+      const response = await fetch(`${reqconfig.baseURL}/${env.AT_SHEET}?${objectToQueryString(params)}`, {
+        headers: new Headers(reqconfig.headers),
+      });
       const data = await response.json();
       return { data };
     },
