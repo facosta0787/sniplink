@@ -51,13 +51,17 @@ jobs:
         run: |
           git fetch --all
           git checkout ${{ github.event.pull_request.head.ref }}
+      - name: Setting up pnpm v9.0.4
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9.0.4
       - name: Setting up node v20.12.2
         uses: actions/setup-node@v3
         with:
           node-version: 20.12.2
-          cache: 'npm'
+          cache: 'pnpm'
       - name: Installing Dependencies
-        run: npm ci --no-audit --no-fund
+        run: pnpm install --frozen-lockfile=true
       - name: Creating Preview App
         run: |
           CAPROVER_SERVER_URL=${{ secrets.CAPROVER_URL }} \
@@ -94,13 +98,17 @@ jobs:
         run: |
           git fetch --all
           git checkout ${{ github.event.pull_request.head.ref }}
+      - name: Setting up pnpm v9.0.4
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9.0.4
       - name: Setting up node v20.12.2
         uses: actions/setup-node@v3
         with:
           node-version: 20.12.2
-          cache: 'npm'
+          cache: 'pnpm'
       - name: Installing Dependencies
-        run: npm ci --no-audit --no-fund
+        run: pnpm install --frozen-lockfile=true
       - name: Deploying preview app
         run: |
           npx --no-install caprover deploy \
@@ -118,13 +126,17 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 1
+      - name: Setting up pnpm v9.0.4
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9.0.4
       - name: Setting up node v20.12.2
         uses: actions/setup-node@v3
         with:
           node-version: 20.12.2
-          cache: 'npm'
+          cache: 'pnpm'
       - name: Installing Dependencies
-        run: npm ci --no-audit --no-fund
+        run: pnpm install --frozen-lockfile=true
       - name: Destroying preview app
         run: |
           EVENT=destroy-env \
