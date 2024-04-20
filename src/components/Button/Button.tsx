@@ -9,12 +9,7 @@ interface ButtonProps {
   [key: string]: any;
 }
 
-const Button: FC<ButtonProps> = ({
-  children,
-  onClick,
-  className,
-  ...restProps
-}) => {
+const Button: FC<ButtonProps> = ({ children, onClick, className, ...restProps }) => {
   return (
     <button
       className={cs(scss.button, {

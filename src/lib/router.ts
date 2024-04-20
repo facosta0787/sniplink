@@ -7,10 +7,7 @@ type IHandle = {
 export default function Router() {
   const handle: IHandle = {};
 
-  async function router(
-    req: NextApiRequest,
-    res: NextApiResponse,
-  ): Promise<void> {
+  async function router(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     switch (req.method) {
       case 'GET':
         if (router.handle.get) {
@@ -47,33 +44,23 @@ export default function Router() {
 
   router.handle = handle;
 
-  router.get = function (
-    cb: (req: NextApiRequest, res: NextApiResponse) => any,
-  ) {
+  router.get = function (cb: (req: NextApiRequest, res: NextApiResponse) => any) {
     router.handle.get = cb;
   };
 
-  router.post = function (
-    cb: (req: NextApiRequest, res: NextApiResponse) => void,
-  ) {
+  router.post = function (cb: (req: NextApiRequest, res: NextApiResponse) => void) {
     router.handle.post = cb;
   };
 
-  router.delete = function (
-    cb: (req: NextApiRequest, res: NextApiResponse) => void,
-  ) {
+  router.delete = function (cb: (req: NextApiRequest, res: NextApiResponse) => void) {
     router.handle.delete = cb;
   };
 
-  router.put = function (
-    cb: (req: NextApiRequest, res: NextApiResponse) => void,
-  ) {
+  router.put = function (cb: (req: NextApiRequest, res: NextApiResponse) => void) {
     router.handle.put = cb;
   };
 
-  router.patch = function (
-    cb: (req: NextApiRequest, res: NextApiResponse) => void,
-  ) {
+  router.patch = function (cb: (req: NextApiRequest, res: NextApiResponse) => void) {
     router.handle.patch = cb;
   };
 

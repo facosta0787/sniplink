@@ -77,9 +77,7 @@ const Home: NextPage = ({ linkDomain }: { linkDomain?: string | null }) => {
             autoFocus
             placeholder="Long URL"
             value={formLink.shorten}
-            onChange={(event) =>
-              setFormLink((prev: IFormLink) => ({ ...prev, shorten: event.target.value }))
-            }
+            onChange={(event) => setFormLink((prev: IFormLink) => ({ ...prev, shorten: event.target.value }))}
           />
 
           <div className={scss.formGroup}>
@@ -89,18 +87,14 @@ const Home: NextPage = ({ linkDomain }: { linkDomain?: string | null }) => {
               autoComplete="off"
               placeholder="Alias"
               value={formLink.alias}
-              onChange={(event) =>
-                setFormLink((prev: IFormLink) => ({ ...prev, alias: event.target.value }))
-              }
+              onChange={(event) => setFormLink((prev: IFormLink) => ({ ...prev, alias: event.target.value }))}
             />
             <Button type="submit" className={scss.submitButton}>
               Shorten
             </Button>
           </div>
 
-          <p className={scss.aliasCaption}>
-            Alias must be hyphen separated. Example: this-is-my-alias
-          </p>
+          <p className={scss.aliasCaption}>Alias must be hyphen separated. Example: this-is-my-alias</p>
 
           <span
             className={cs(scss.urlStringError, {

@@ -25,9 +25,7 @@ async function fetchDeployments() {
   const { deployments, error } = await fetcher(reqUrl);
 
   if (error) {
-    throw new Error(
-      `Deployments | ${capitalize(error.code)}: ${error.message}`,
-    );
+    throw new Error(`Deployments | ${capitalize(error.code)}: ${error.message}`);
   }
 
   return Promise.resolve(
@@ -69,34 +67,24 @@ async function main() {
       throw new Error('Forbidden: Token is missing, it is required.');
     }
 
-    const [deployments, aliases] = await Promise.all([
-      fetchDeployments(),
-      fetchAliases(),
-    ]);
+    const [deployments, aliases] = await Promise.all([fetchDeployments(), fetchAliases()]);
     const toRemove = deployments.filter(
-      (deployment) =>
-        !aliases.some((alias) => alias.deploymentId === deployment.uid),
+      (deployment) => !aliases.some((alias) => alias.deploymentId === deployment.uid),
     );
 
     if (!toRemove.length) {
-      spinner.warn(
-        `${color.yellowBright('Info')} There are not deployments to remove.`,
-      );
+      spinner.warn(`${color.yellowBright('Info')} There are not deployments to remove.`);
       endTime = Date.now();
       const spendTime = (endTime - beginTime) / 1000 + 's.';
       console.log('✨ Done in ' + spendTime);
       process.exit(0);
     }
 
-    const removePromises = toRemove.map((deployment) =>
-      deleteDeployment(deployment.uid),
-    );
+    const removePromises = toRemove.map((deployment) => deleteDeployment(deployment.uid));
     const responseValues = await Promise.all(removePromises);
 
     if (responseValues.every((value) => value.state === 'DELETED')) {
-      spinner.succeed(
-        `${color.greenBright('Success')} Obsolete deployments removed.`,
-      );
+      spinner.succeed(`${color.greenBright('Success')} Obsolete deployments removed.`);
       console.table(toRemove);
       endTime = Date.now();
       const spendTime = (endTime - beginTime) / 1000 + 'secs.';
@@ -104,9 +92,7 @@ async function main() {
       process.exit(0);
     }
   } catch (err) {
-    spinner.fail(
-      `${color.redBright('Error')} ${err.message.replace(/Error:/gi, '')}.`,
-    );
+    spinner.fail(`${color.redBright('Error')} ${err.message.replace(/Error:/gi, '')}.`);
     process.exit(1);
   }
 }
