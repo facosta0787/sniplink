@@ -21,7 +21,11 @@ interface IFormLink {
 
 const initialStateFormLink: IFormLink = { shorten: '', alias: '' };
 
-const Home: NextPage = ({ linkDomain }: { linkDomain?: string | null }) => {
+interface IHomeProps {
+  linkDomain: string;
+}
+
+const Home: NextPage<IHomeProps> = ({ linkDomain }) => {
   const [result, setResult] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState<boolean>(false);

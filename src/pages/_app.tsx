@@ -9,13 +9,14 @@ const queryClient = new QueryClient();
 
 interface MyAppProps extends AppProps {
   host: string;
+  linkDomain: string;
 }
 
 function MyApp(props: MyAppProps) {
-  const { Component, pageProps, host } = props;
+  const { Component, pageProps, host, linkDomain } = props;
   return (
     <QueryClientProvider client={queryClient}>
-      <Component {...pageProps} />
+      <Component {...pageProps} linkDomain={linkDomain} />
       <Envlabel host={host} />
     </QueryClientProvider>
   );
@@ -26,11 +27,8 @@ MyApp.getInitialProps = async (appContext: any) => {
   const appProps = await App.getInitialProps(appContext);
   return {
     ...appProps,
-    pageProps: {
-      ...appProps.pageProps,
-      linkDomain: config.LINK_DOMAIN,
-    },
     host: req?.headers.host,
+    linkDomain: config.LINK_DOMAIN,
   };
 };
 
