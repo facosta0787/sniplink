@@ -10,7 +10,21 @@ const linkDomain = config.LINK_DOMAIN;
 
 router.get(async function (req: NextApiRequest, res: NextApiResponse) {
   const { q } = req.query;
+  console.log('>> q', q);
   try {
+    if (!q) {
+      const links = await db.conn.link.findMany({
+        orderBy: {
+          createdAt: 'desc',
+        },
+        take: 10,
+      });
+
+      return res.status(200).json({
+        links,
+      });
+    }
+
     const link = await db.conn.link.findFirstOrThrow({
       where: {
         OR: [{ hash: { equals: q } }, { alias: { equals: q } }],

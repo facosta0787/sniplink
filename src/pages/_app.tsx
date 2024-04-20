@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app';
 import App from 'next/app';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { Envlabel } from 'src/components/Envlabel';
+import { config } from '../../config/env';
 import '../shared/styles/globals.css';
 
 const queryClient = new QueryClient();
@@ -25,6 +26,10 @@ MyApp.getInitialProps = async (appContext: any) => {
   const appProps = await App.getInitialProps(appContext);
   return {
     ...appProps,
+    pageProps: {
+      ...appProps.pageProps,
+      linkDomain: config.LINK_DOMAIN,
+    },
     host: req?.headers.host,
   };
 };
