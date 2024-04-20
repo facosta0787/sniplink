@@ -20,7 +20,8 @@ EXPOSE 3000
 
 WORKDIR /sniplink
 
-COPY package*.json ./
+COPY package.json ./
+COPY pnpm-lock.yaml ./
 
 RUN pnpm install --frozen-lockfile=true
 COPY . .
