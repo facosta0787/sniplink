@@ -10,7 +10,7 @@ const linkDomain = config.LINK_DOMAIN;
 
 router.get(async function (req: NextApiRequest, res: NextApiResponse) {
   const { q } = req.query;
-  console.log('>> q', q);
+
   try {
     if (!q) {
       const links = await db.conn.link.findMany({
