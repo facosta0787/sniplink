@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { config } from 'config/env';
 import Router from 'src/lib/router';
 import db from 'src/lib/db';
 
@@ -7,7 +6,6 @@ const router = Router();
 
 router.post(async function (req: NextApiRequest, res: NextApiResponse) {
   const { linkId } = req.body;
-  console.log('>> req.body', req.body);
 
   if (!linkId) {
     return res.status(400).json({
