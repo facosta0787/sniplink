@@ -13,12 +13,24 @@ datasource db {
 }
 
 model Link {
-  id        String   @id @default(cuid())
-  hash      String   @unique
-  link      String   @db.Text
-  alias     String?  @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String      @id @default(cuid())
+  hash      String      @unique
+  link      String      @db.Text
+  alias     String?     @unique
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  Analytics Analytics[]
 
   @@map("links")
+}
+
+model Analytics {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  linkId    String
+  link      Link     @relation(fields: [linkId], references: [id])
+
+  @@index([linkId], name: "analytics_linkId_fkey")
+  @@map("analytics")
 }
